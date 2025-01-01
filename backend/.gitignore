@@ -1,0 +1,52 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+*.log
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Environments
+*.env
+.venv/
+venv/
+env/
+ENV/
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Pycharm
+.idea/
+
+# Test and Coverage
+.coverage
+*.cover
+nosetests.xml
+coverage.xml
+*.hypothesis/
+*.tox/
