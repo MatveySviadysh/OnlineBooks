@@ -6,25 +6,29 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from .producer import publish
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    @method_decorator(cache_page(60 * 15))  # Cache for 15 minutes
+    @method_decorator(cache_page(60 * 15))  # Кэширование на 15 минут
     @swagger_auto_schema(
         operation_description="Получить список всех книг",
         responses={200: BookSerializer(many=True)},
     )
     def list(self, request, *args, **kwargs):
+        publish(method='list', body={'message': 'Books list requested'})
         return super().list(request, *args, **kwargs)
 
-    @method_decorator(cache_page(60 * 15))  # Cache for 15 minutes
+    @method_decorator(cache_page(60 * 15))  # Кэширование на 15 минут
     @swagger_auto_schema(
         operation_description="Получить книгу по ID",
         responses={200: BookSerializer},
     )
     def retrieve(self, request, *args, **kwargs):
+        book_id = kwargs.get('pk', None)
+        publish(method='retrieve', body={'message': f'Book {book_id} retrieved'})
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(
@@ -33,6 +37,7 @@ class BookViewSet(viewsets.ModelViewSet):
         responses={201: BookSerializer},
     )
     def create(self, request, *args, **kwargs):
+        publish(method='create', body={'message': 'New book created', 'data': request.data})
         return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(
@@ -41,6 +46,8 @@ class BookViewSet(viewsets.ModelViewSet):
         responses={200: BookSerializer},
     )
     def update(self, request, *args, **kwargs):
+        book_id = kwargs.get('pk', None)
+        publish(method='update', body={'message': f'Book {book_id} updated', 'data': request.data})
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(
@@ -48,4 +55,6 @@ class BookViewSet(viewsets.ModelViewSet):
         responses={204: openapi.Response('Книга успешно удалена')},
     )
     def destroy(self, request, *args, **kwargs):
+        book_id = kwargs.get('pk', None)
+        publish(method='destroy', body={'message': f'Book {book_id} deleted'})
         return super().destroy(request, *args, **kwargs)
