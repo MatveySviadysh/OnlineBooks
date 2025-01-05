@@ -1,0 +1,3 @@
+[submodule "AuthorsApi"]
+	path = AuthorsApi
+	url = git@github.com:MatveySviadysh/AuthorsApi.git
