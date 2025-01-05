@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <splash-screen />
     <nav>
       <router-link to="/">Главная</router-link> |
       <router-link to="/login">Вход</router-link> |
@@ -8,16 +9,28 @@
       <router-link to="/profile">Профиль</router-link>
     </nav>
     
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+
+    <AppFooter />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+  import { defineComponent } from 'vue'
+  import SplashScreen from '@/components/help/SplashScreen.vue'
+  import AppFooter from '@/components/layout/Footer.vue'
 
-export default defineComponent({
-  name: 'App'
-})
+  export default defineComponent({
+    name: 'App',
+    components: {
+      SplashScreen,
+      AppFooter
+    }
+  })
 </script>
 
 <style lang="scss">
@@ -44,5 +57,15 @@ nav {
       color: #42b983;
     }
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
