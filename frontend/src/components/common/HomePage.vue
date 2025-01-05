@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import '@/styles/components/common/HomePage.scss'
 export default defineComponent({
   name: 'HomePage'
 })

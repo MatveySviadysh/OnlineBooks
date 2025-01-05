@@ -41,6 +41,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import axios from 'axios'
+import '@/styles/components/common/AuthorsList.scss'
 
 interface Author {
   id: number;
@@ -94,46 +95,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.authors-list {
-  padding: 20px;
-}
-
-.authors-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.authors-table th,
-.authors-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.authors-table th {
-  background-color: #f4f4f4;
-}
-
-.authors-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.authors-table tr:hover {
-  background-color: #f5f5f5;
-}
-
-.error {
-  color: red;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-img {
-  object-fit: cover;
-  border-radius: 4px;
-}
-</style>
-  
