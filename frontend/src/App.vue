@@ -1,15 +1,48 @@
 <template>
   <div id="app">
-    <AuthorsList />
+    <nav>
+      <router-link to="/">Главная</router-link> |
+      <router-link to="/login">Вход</router-link> |
+      <router-link to="/register">Регистрация</router-link> |
+      <router-link to="/authors">Авторы</router-link> |
+      <router-link to="/profile">Профиль</router-link>
+    </nav>
+    
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-import AuthorsList from './components/AuthorsList.vue';
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default {
-  components: {
-    AuthorsList,
-  }
-};
+export default defineComponent({
+  name: 'App'
+})
 </script>
+
+<style lang="scss">
+nav {
+  padding: 30px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    
+    &.router-link-exact-active {
+      color: #42b983;
+      background-color: rgba(66, 185, 131, 0.1);
+    }
+
+    &:hover {
+      color: #42b983;
+    }
+  }
+}
+</style>
