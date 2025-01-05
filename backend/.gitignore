@@ -1,52 +1,56 @@
 # Python
-*.pyc
-*.pyo
-*.pyd
 __pycache__/
-*.db
-*.sqlite3
-*.log
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Django
-*.log
-*.pot
-*.pyc
-*.pyo
-__pycache__/
-db.sqlite3
-media/
-staticfiles/
-
-# Environments
-*.env
-.venv/
+# Виртуальное окружение
 venv/
 env/
 ENV/
 
-# Django migrations
-*/migrations/*
-!*/migrations/__init__.py
-
-# VSCode
-.vscode/
-
-# PyCharm
+# IDE
 .idea/
-
-# macOS
+.vscode/
+*.swp
+*.swo
 .DS_Store
 
-# Windows
-Thumbs.db
+# Логи и базы данных
+*.log
+*.sqlite3
+*.db
 
-# Pycharm
-.idea/
+# Локальные настройки
+.env
+.env.local
+.env.*.local
 
-# Test and Coverage
+# Кэш FastAPI
+.pytest_cache/
 .coverage
-*.cover
-nosetests.xml
-coverage.xml
-*.hypothesis/
-*.tox/
+htmlcov/
+
+# MongoDB
+data/db/
+
+# Другие файлы
+*.bak
+*.tmp
+*.temp

@@ -1,27 +1,25 @@
-# Makefile for Django project
+.PHONY: install run test lint migrate clean format
 
-# Параметры
-PYTHON=python
-DJANGO_MANAGE=python manage.py
-
-# Общие задачи
 install:
-    pip install -r requirements.txt
+	pip install -r requirements.txt
 
-migrate:
-    $(DJANGO_MANAGE) migrate
-
-makemigrations:
-    $(DJANGO_MANAGE) makemigrations
-
-runserver:
-    $(DJANGO_MANAGE) runserver
+run:
+	uvicorn app.main:app --reload
 
 test:
-    $(DJANGO_MANAGE) test
+	pytest
 
-create_superuser:
-    $(DJANGO_MANAGE) createsuperuser
+lint:
+	flake8 app tests
+	black app tests --check
+
+format:
+	black app tests
+	isort app tests
+
+migrate:
+	alembic upgrade head
 
 clean:
-    find . -name '*.pyc' -exec rm -f {} \;
+	find . -type d -name __pycache__ -exec rm -r {} +
+	find . -type f -name "*.pyc" -delete 
