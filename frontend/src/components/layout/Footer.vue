@@ -1,75 +1,58 @@
 <template>
   <footer class="main-footer">
     <div class="footer-content">
-      <!-- Навигация -->
-      <div class="footer-section">
-        <h3>Навигация</h3>
-        <nav>
-          <ul>
-            <li><router-link to="/services">Услуги</router-link></li>
-            <li><router-link to="/offers">Предложения</router-link></li>
-            <li><router-link to="/artists">Художники</router-link></li>
-            <li><router-link to="/list">Каталог</router-link></li>
-          </ul>
-        </nav>
-      </div>
-
-      <!-- Служба поддержки -->
+      <!-- Customer Service -->
       <div class="footer-section customer-service">
-        <h3>Служба поддержки</h3>
+        <h3>Customer Service</h3>
         <div class="working-hours">
-          <p>Пн-Пт: 9:00 - 17:00</p>
-          <p>Сб: 10:00 - 16:00</p>
-          <p>24 декабря: 10:00 - 14:00</p>
+          <p>Mon-Fri: 9:00 - 17:00</p>
+          <p>Sat: 10:00 - 16:00</p>
+          <p>Dec 24: 10:00 - 14:00</p>
         </div>
         <div class="contact-info">
-          <a href="tel:+74004414546" class="phone">+7 (400) 441-45-46</a>
           <a href="mailto:support@example.com" class="email">
-            <i class="far fa-envelope"></i> Написать нам
+            <i class="far fa-envelope"></i> Email Us
           </a>
         </div>
       </div>
 
-      <!-- Рассылка -->
+      <!-- Newsletter -->
       <div class="footer-section newsletter">
-        <h3>Новости и акции</h3>
-        <p>Подпишитесь на нашу рассылку, чтобы быть в курсе новых коллекций и специальных предложений</p>
+        <h3>Newsletter</h3>
+        <p>Receive our newsletter and discover our stories, collections, and surprises.</p>
         <form @submit.prevent="handleSubscribe" class="subscribe-form">
           <input 
             v-model="email" 
             type="email" 
-            placeholder="Ваш email" 
+            placeholder="Your email" 
             required
           />
-          <button type="submit">Подписаться</button>
+          <button type="submit">Subscribe</button>
         </form>
       </div>
 
-      <!-- Социальные сети -->
+      <!-- Social Media -->
       <div class="footer-section social-media">
-        <h3>Мы в соцсетях</h3>
+        <h3>Follow Us</h3>
         <div class="social-links">
-          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <i class="fab fa-telegram"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
           </a>
           <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
-            <i class="fab fa-pinterest"></i>
           </a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <a href="#" class="location-link">
-        <i class="fas fa-map-marker-alt"></i> Россия
-      </a>
-      <p class="copyright">&copy; {{ currentYear }} Art Gallery. Все права защищены.</p>
+      <p class="copyright">&copy; {{ currentYear }} Art Gallery. All rights reserved.</p>
     </div>
   </footer>
 </template>

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <splash-screen />
+    <AppHeader />
     <nav>
       <router-link to="/">Главная</router-link> |
       <router-link to="/login">Вход</router-link> |
@@ -23,12 +24,14 @@
   import { defineComponent } from 'vue'
   import SplashScreen from '@/components/help/SplashScreen.vue'
   import AppFooter from '@/components/layout/Footer.vue'
-
+  import AppHeader from '@/components/layout/Header.vue'
+  
   export default defineComponent({
     name: 'App',
     components: {
       SplashScreen,
-      AppFooter
+      AppFooter,
+      AppHeader
     }
   })
 </script>
