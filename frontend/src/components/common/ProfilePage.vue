@@ -20,7 +20,6 @@
           <span class="label">Email:</span>
           <span class="value">{{ user.email }}</span>
         </div>
-        <!-- Здесь можно добавить другие поля пользователя -->
       </div>
 
       <div class="profile-actions">
@@ -67,7 +66,8 @@ export default defineComponent({
         }
       } catch (error: any) {
         if (error.response?.status === 401) {
-          this.error = 'Необходимо войти в систему'
+          this.$router.push('/login')
+          return
         } else {
           this.error = 'Ошибка при загрузке профиля'
         }

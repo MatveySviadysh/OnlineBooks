@@ -42,13 +42,14 @@
       </div>
 
       <!-- Правая часть -->
-      
-        <div class="right-actions">
-            <div class="account-wrapper">
+      <div class="right-actions">
+        <div class="account-wrapper">
+          <router-link to="/profile" class="account-link">
             <i class="far fa-user"></i>
             <span>Account</span>
-            </div>
+          </router-link>
         </div>
+      </div>
     </div>
   </header>
 </template>
@@ -64,7 +65,6 @@ export default defineComponent({
 
     const toggleMenu = () => {
       isMenuOpen.value = !isMenuOpen.value
-      // Блокируем скролл при открытом меню
       document.body.style.overflow = isMenuOpen.value ? 'hidden' : ''
     }
 
