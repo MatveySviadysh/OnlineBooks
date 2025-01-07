@@ -5,13 +5,23 @@ from schemas.book import BookCreate, BookUpdate, BookResponse
 from crud.crud_book import get_book_crud
 
 router = APIRouter(
-    prefix="/books",
+    prefix="/books", 
     tags=["books"],
     responses={404: {"description": "Книга не найдена"}}
 )
 
 @router.post("/", response_model=BookResponse, status_code=201)
 async def create_book(book: BookCreate, db = Depends(get_database)):
+    """
+    Создание новой книги со следующими полями:
+    - title: название книги (макс. 200 символов)
+    - author: автор книги (макс. 100 символов)
+    - genre: жанр книги
+    - publication_date: дата публикации
+    - language: язык книги
+    - page_count: количество страниц
+    - rating: рейтинг книги (0-5)
+    """
     crud_book = get_book_crud(db)
     return await crud_book.create(book)
 
@@ -20,7 +30,12 @@ async def get_all_books(skip: int = 0, limit: int = 100, db = Depends(get_databa
     crud_book = get_book_crud(db)
     return await crud_book.get_all(skip, limit)
 
-@router.get("/all", response_model=List[BookResponse])
+@router.get("/popular", response_model=List[BookResponse])
+async def get_popular_books(skip: int = 0, limit: int = 100, db = Depends(get_database)):
+    crud_book = get_book_crud(db)
+    return await crud_book.get_popular(skip, limit)
+
+@router.get("/all", response_model=List[BookResponse]) 
 async def get_all_books_without_limit(db = Depends(get_database)):
     crud_book = get_book_crud(db)
     return await crud_book.get_all_without_limit()
@@ -39,6 +54,12 @@ async def get_book(book_id: str, db = Depends(get_database)):
 async def update_book(book_id: str, book_data: BookUpdate, db = Depends(get_database)):
     crud_book = get_book_crud(db)
     return await crud_book.update(book_id, book_data)
+
+@router.delete("/delete-all", status_code=204)
+async def delete_all_books(db = Depends(get_database)):
+    """Удаление всех книг из базы данных"""
+    crud_book = get_book_crud(db)
+    await crud_book.delete_all()
 
 @router.delete("/{book_id}", status_code=204)
 async def delete_book(book_id: str, db = Depends(get_database)):

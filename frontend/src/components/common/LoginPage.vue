@@ -9,13 +9,13 @@
 
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email">E-mail *</label>
           <input 
             type="email" 
             id="email"
             v-model="formData.email"
             required
-            placeholder="Введите email"
+            placeholder="yourname@domain.com"
           >
         </div>
 

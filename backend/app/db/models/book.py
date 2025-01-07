@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 class Book(BaseModel):
-    title: str = Field(..., max_length=200)
+    title: str = Field(..., max_length=200, unique=True)
     author: str = Field(..., max_length=100)
     description: Optional[str] = None
     price: Optional[float] = None

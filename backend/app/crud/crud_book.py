@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from schemas.book import BookCreate, BookUpdate, BookResponse
 from api.book.helper_book import book_helper
+from datetime import datetime
 
 class CRUDBook:
     def __init__(self, db: AsyncIOMotorDatabase):
@@ -14,6 +15,9 @@ class CRUDBook:
     async def create(self, book: BookCreate) -> BookResponse:
         """Создание новой книги"""
         new_book = book.dict()
+        new_book["created_at"] = datetime.utcnow()
+        new_book["updated_at"] = datetime.utcnow()
+        
         result = await self.collection.insert_one(new_book)
         new_book["_id"] = result.inserted_id
         return book_helper(new_book)
@@ -35,6 +39,13 @@ class CRUDBook:
         books = await self.collection.find().skip(skip).limit(limit).to_list(limit)
         return [book_helper(book) for book in books]
 
+    async def get_popular(self, skip: int = 0, limit: int = 100) -> List[BookResponse]:
+        """Получение популярных книг с рейтингом выше 3 с пагинацией"""
+        books = await self.collection.find(
+            {"rating": {"$gte": 3.0}}
+        ).sort("views", -1).skip(skip).limit(limit).to_list(limit)
+        return [book_helper(book) for book in books]
+
     async def get_all_without_limit(self) -> List[BookResponse]:
         """Получение всех книг без ограничений"""
         books = await self.collection.find().to_list(None)
@@ -47,9 +58,16 @@ class CRUDBook:
     async def update(self, book_id: str, book_data: BookUpdate) -> BookResponse:
         """Обновление существующей книги"""
         try:
-            if not await self.collection.find_one({"_id": ObjectId(book_id)}):
+            if not ObjectId.is_valid(book_id):
+                raise HTTPException(status_code=400, detail="Неверный формат ID книги")
+                
+            existing_book = await self.collection.find_one({"_id": ObjectId(book_id)})
+            if not existing_book:
                 raise HTTPException(status_code=404, detail="Книга не найдена")
+            
             update_data = book_data.dict(exclude_unset=True)
+            update_data["updated_at"] = datetime.utcnow()
+            
             await self.collection.update_one(
                 {"_id": ObjectId(book_id)}, 
                 {"$set": update_data}
@@ -62,11 +80,19 @@ class CRUDBook:
     async def delete(self, book_id: str) -> None:
         """Удаление книги"""
         try:
-            if not await self.collection.find_one({"_id": ObjectId(book_id)}):
+            if not ObjectId.is_valid(book_id):
+                raise HTTPException(status_code=400, detail="Неверный формат ID книги")
+                
+            result = await self.collection.delete_one({"_id": ObjectId(book_id)})
+            if result.deleted_count == 0:
                 raise HTTPException(status_code=404, detail="Книга не найдена")
-            await self.collection.delete_one({"_id": ObjectId(book_id)})
         except InvalidId:
             raise HTTPException(status_code=400, detail="Неверный формат ID книги")
+
+    async def delete_all(self) -> None:
+        """Удаление всех книг"""
+        await self.collection.delete_many({})
+
 
 def get_book_crud(db: AsyncIOMotorDatabase) -> CRUDBook:
     return CRUDBook(db)
