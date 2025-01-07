@@ -12,18 +12,18 @@ router = APIRouter(
 
 @router.post("/", response_model=BookResponse, status_code=201)
 async def create_book(book: BookCreate, db = Depends(get_database)):
-    """
-    Создание новой книги со следующими полями:
-    - title: название книги (макс. 200 символов)
-    - author: автор книги (макс. 100 символов)
-    - genre: жанр книги
-    - publication_date: дата публикации
-    - language: язык книги
-    - page_count: количество страниц
-    - rating: рейтинг книги (0-5)
-    """
     crud_book = get_book_crud(db)
     return await crud_book.create(book)
+
+@router.get("/search", response_model=List[BookResponse])
+async def search_books(query: str, db = Depends(get_database)):
+    crud_book = get_book_crud(db)
+    return await crud_book.search_books(query)
+
+@router.put("/{book_id}/rating", response_model=BookResponse)
+async def update_book_rating(book_id: str, rating: float, db = Depends(get_database)):
+    crud_book = get_book_crud(db)
+    return await crud_book.update_rating(book_id, rating)
 
 @router.get("/", response_model=List[BookResponse])
 async def get_all_books(skip: int = 0, limit: int = 100, db = Depends(get_database)):

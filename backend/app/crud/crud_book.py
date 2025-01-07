@@ -111,6 +111,24 @@ class CRUDBook:
         ).sort("rating", -1).skip(skip).limit(limit).to_list(limit)
         return [book_helper(book) for book in books]
 
+    async def update_rating(self, book_id: str, rating: float) -> BookResponse:
+        """Обновление рейтинга книги"""
+        book = await self.collection.find_one({"_id": ObjectId(book_id)})
+        if not book:
+            raise HTTPException(status_code=404, detail="Книга не найдена")
+        return await self.update(book_id, BookUpdate(rating=rating))
+
+    async def search_books(self, query: str, skip: int = 0, limit: int = 100) -> List[BookResponse]:
+        """Поиск книг по названию или автору"""
+        regex_query = {"$regex": query, "$options": "i"}  # 'i' для нечувствительности к регистру
+        books = await self.collection.find({
+            "$or": [
+                {"title": regex_query},
+                {"author": regex_query}
+            ]
+        }).skip(skip).limit(limit).to_list(limit)
+        return [book_helper(book) for book in books]
+
 
 def get_book_crud(db: AsyncIOMotorDatabase) -> CRUDBook:
     return CRUDBook(db)
