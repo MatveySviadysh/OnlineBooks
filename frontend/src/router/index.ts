@@ -4,6 +4,7 @@ import LoginPage from '@/components/common/LoginPage.vue'
 import RegisterPage from '@/components/common/RegisterPage.vue'
 import AuthorsList from '@/components/common/AuthorsList.vue'
 import ProfilePage from '@/components/common/ProfilePage.vue'
+import AllBooks from '@/components/common/AllBooks.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,8 +32,15 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Profile',
     component: ProfilePage,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/all_books',
+    name: 'AllBooks',
+    component: AllBooks,
+    meta: { requiresAuth: true }
   }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),

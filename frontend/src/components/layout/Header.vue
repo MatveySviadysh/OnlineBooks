@@ -1,4 +1,15 @@
 <template>
+  <!-- Добавляем top-bar перед main-header -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <div class="top-links">
+        <a href="/store-locator">Find a Store</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/exhibitions">Current Exhibitions</a>
+      </div>
+    </div>
+  </div>
+  
   <header class="main-header">
     <!-- Боковая панель меню -->
     <div class="side-menu" :class="{ 'is-open': isMenuOpen }">
@@ -32,12 +43,18 @@
           <span>Menu</span>
         </div>
         <div class="search-wrapper">
-          <input type="text" class="search-input" placeholder="Search">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search" 
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+          >
         </div>
       </div>
 
       <!-- Лого по центру -->
-      <div class="logo">
+      <div class="logo" :class="{ 'hide': isSearchFocused }">
         <a href="/" class="logo-link">Art Gallery</a>
       </div>
 
@@ -62,6 +79,7 @@ export default defineComponent({
   name: 'AppHeader',
   setup() {
     const isMenuOpen = ref(false)
+    const isSearchFocused = ref(false)
 
     const toggleMenu = () => {
       isMenuOpen.value = !isMenuOpen.value
@@ -70,6 +88,7 @@ export default defineComponent({
 
     return {
       isMenuOpen,
+      isSearchFocused,
       toggleMenu
     }
   }

@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from schemas.book import BookCreate, BookUpdate, BookResponse
 from api.book.helper_book import book_helper
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class CRUDBook:
     def __init__(self, db: AsyncIOMotorDatabase):
@@ -46,9 +46,20 @@ class CRUDBook:
         ).sort("views", -1).skip(skip).limit(limit).to_list(limit)
         return [book_helper(book) for book in books]
 
+    async def get_recent(self, skip: int = 0, limit: int = 100) -> List[BookResponse]:
+        """Получение недавно опубликованных книг (не старше 1 года), отсортированных по рейтингу"""
+        one_year_ago = datetime.utcnow() - timedelta(days=365)
+        books = await self.collection.find(
+            {"publication_date": {"$gte": one_year_ago}}
+        ).sort([
+            ("rating", -1),
+            ("publication_date", -1)
+        ]).skip(skip).limit(limit).to_list(limit)
+        return [book_helper(book) for book in books]
+
     async def get_all_without_limit(self) -> List[BookResponse]:
-        """Получение всех книг без ограничений"""
-        books = await self.collection.find().to_list(None)
+        """Получение всех книг без ограничений, отсортированных по рейтингу"""
+        books = await self.collection.find().sort("rating", -1).to_list(None)
         return [book_helper(book) for book in books]
 
     async def get_count(self) -> int:
@@ -92,6 +103,13 @@ class CRUDBook:
     async def delete_all(self) -> None:
         """Удаление всех книг"""
         await self.collection.delete_many({})
+
+    async def get_by_genre(self, genre: str, skip: int = 0, limit: int = 100) -> List[BookResponse]:
+        """Получение книг по жанру, отсортированных по рейтингу"""
+        books = await self.collection.find(
+            {"genre": genre}
+        ).sort("rating", -1).skip(skip).limit(limit).to_list(limit)
+        return [book_helper(book) for book in books]
 
 
 def get_book_crud(db: AsyncIOMotorDatabase) -> CRUDBook:

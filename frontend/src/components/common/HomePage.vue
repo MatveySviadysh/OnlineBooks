@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <h1>Главная страница</h1>
+    <img src="@/assets/main.jpg" alt="">
     <BookTicker />
+    <BooksList />
     <CookieConsent />
   </div>
 </template>
@@ -11,12 +12,14 @@ import { defineComponent } from 'vue'
 import '@/styles/components/common/HomePage.scss'
 import BookTicker from '../help/BookTicker.vue'
 import CookieConsent from '../help/CookieConsent.vue'
+import BooksList from '../help/BooksList.vue'
 
 export default defineComponent({
   name: 'HomePage',
   components: {
     BookTicker,
-    CookieConsent
+    CookieConsent,
+    BooksList
   }
 })
 </script> 

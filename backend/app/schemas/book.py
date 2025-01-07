@@ -29,4 +29,7 @@ class BookResponse(BookBase):
 
     class Config:
         from_attributes = True
-        populate_by_name = True 
+        populate_by_name = True
+        json_encoders = {
+            datetime: lambda dt: dt.strftime("%d-%m-%Y")
+        } 

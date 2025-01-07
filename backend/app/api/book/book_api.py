@@ -35,6 +35,12 @@ async def get_popular_books(skip: int = 0, limit: int = 100, db = Depends(get_da
     crud_book = get_book_crud(db)
     return await crud_book.get_popular(skip, limit)
 
+@router.get("/recent", response_model=List[BookResponse])
+async def get_recent_books(skip: int = 0, limit: int = 100, db = Depends(get_database)):
+    """Получение недавно опубликованных книг (не старше 1 года)"""
+    crud_book = get_book_crud(db)
+    return await crud_book.get_recent(skip, limit)
+
 @router.get("/all", response_model=List[BookResponse]) 
 async def get_all_books_without_limit(db = Depends(get_database)):
     crud_book = get_book_crud(db)
@@ -65,3 +71,14 @@ async def delete_all_books(db = Depends(get_database)):
 async def delete_book(book_id: str, db = Depends(get_database)):
     crud_book = get_book_crud(db)
     await crud_book.delete(book_id)
+
+@router.get("/genre/{genre}", response_model=List[BookResponse])
+async def get_books_by_genre(
+    genre: str, 
+    skip: int = 0, 
+    limit: int = 100, 
+    db = Depends(get_database)
+):
+    """Получение всех книг определенного жанра"""
+    crud_book = get_book_crud(db)
+    return await crud_book.get_by_genre(genre, skip, limit)
