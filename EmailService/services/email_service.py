@@ -18,3 +18,9 @@ async def send_email(sender_email, sender_password, recipient_email, subject, bo
     except Exception as e:
         return False, f"Ошибка при отправке письма: {e}"
 
+
+def issuccess(success, message):
+    if success:
+        print(f"Email отправлен успешно: {message}")
+    else:
+        print(f"Ошибка при отправке email: {message}")

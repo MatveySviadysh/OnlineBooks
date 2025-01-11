@@ -11,4 +11,3 @@ async def error_handler(request, handler):
         return web.json_response({'success': False, 'message': str(ex)}, status=ex.status)
     except Exception as e:
         return web.json_response({'success': False, 'message': f'Общая ошибка: {str(e)}'}, status=500)
-
