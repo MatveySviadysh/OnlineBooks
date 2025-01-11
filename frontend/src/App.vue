@@ -2,14 +2,6 @@
   <div id="app">
     <splash-screen />
     <AppHeader />
-    <!-- <nav>
-      <router-link to="/">Главная</router-link> |
-      <router-link to="/login">Вход</router-link> |
-      <router-link to="/register">Регистрация</router-link> |
-      <router-link to="/authors">Авторы</router-link> |
-      <router-link to="/profile">Профиль</router-link>
-    </nav> -->
-    
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />

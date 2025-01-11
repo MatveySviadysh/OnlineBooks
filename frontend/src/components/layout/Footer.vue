@@ -27,7 +27,6 @@
           />
           <button type="submit">Subscribe</button>
         </form>
-        <!-- Show success or error message -->
         <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">{{ message }}</p>
       </div>
 
@@ -80,10 +79,11 @@ export default defineComponent({
         const result = await response.json();
 
         if (result.success) {
-          message.value = result.message || 'You have successfully subscribed!';
+          // Message in English
+          message.value = 'The invitation has been sent to your email!';
           isSuccess.value = true;
         } else {
-          message.value = result.message || 'Something went wrong. Please try again.';
+          message.value = 'Something went wrong. Please try again.';
           isSuccess.value = false;
         }
       } catch (error) {
@@ -92,6 +92,11 @@ export default defineComponent({
       }
 
       email.value = ''; // Clear input
+
+      // Set timeout to clear the message after 1 minute
+      setTimeout(() => {
+        message.value = '';
+      }, 60000); // 60000ms = 1 minute
     };
 
     return {
