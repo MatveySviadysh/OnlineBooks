@@ -1,7 +1,6 @@
 <template>
   <footer class="main-footer">
     <div class="footer-content">
-      <!-- Customer Service -->
       <div class="footer-section customer-service">
         <h3>Customer Service</h3>
         <div class="working-hours">
@@ -16,7 +15,6 @@
         </div>
       </div>
 
-      <!-- Newsletter -->
       <div class="footer-section newsletter">
         <h3>Newsletter</h3>
         <p>Receive our newsletter and discover our stories, collections, and surprises.</p>
@@ -29,9 +27,10 @@
           />
           <button type="submit">Subscribe</button>
         </form>
+        <!-- Show success or error message -->
+        <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">{{ message }}</p>
       </div>
 
-      <!-- Social Media -->
       <div class="footer-section social-media">
         <h3>Follow Us</h3>
         <div class="social-links">
@@ -65,18 +64,53 @@ export default defineComponent({
   name: 'AppFooter',
   setup() {
     const email = ref('')
+    const message = ref('')
+    const isSuccess = ref(true)
 
-    const handleSubscribe = () => {
-      console.log('Подписка на email:', email.value)
-      email.value = ''
-    }
+    const handleSubscribe = async () => {
+      try {
+        const response = await fetch('http://localhost:8888/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ recipient_email: email.value }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          message.value = result.message || 'You have successfully subscribed!';
+          isSuccess.value = true;
+        } else {
+          message.value = result.message || 'Something went wrong. Please try again.';
+          isSuccess.value = false;
+        }
+      } catch (error) {
+        message.value = 'Error during subscription. Please try again later.';
+        isSuccess.value = false;
+      }
+
+      email.value = ''; // Clear input
+    };
 
     return {
       email,
       handleSubscribe,
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
+      message,
+      isSuccess
     }
   }
 })
 </script>
 
+<style scoped>
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+</style>
