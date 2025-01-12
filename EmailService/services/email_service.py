@@ -1,6 +1,8 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import aiohttp
+
 
 async def send_email(sender_email, sender_password, recipient_email, subject, body):
     try:
@@ -25,3 +27,16 @@ def issuccess(success, message):
         print(f"Email отправлен успешно: {message}")
     else:
         print(f"Ошибка при отправке email: {message}")
+
+async def fetch_subscribers():
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://127.0.0.1:8001/api/mailing_list/mailing_list/emails/') as response:
+            if response.status != 200:
+                raise Exception(f'Error fetching subscribers: {response.status}')
+            return await response.json()
+
+async def add_subscriber(email):
+    async with aiohttp.ClientSession() as session:
+        async with session.post('http://127.0.0.1:8001/api/mailing_list/mailing_list/emails/', json={'email': email}) as response:
+            if response.status not in (200, 201):
+                raise Exception(f'Error adding subscriber: {response.status}')

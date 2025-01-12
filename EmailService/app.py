@@ -1,9 +1,8 @@
 from aiohttp import web
 import aiohttp_cors
 from api.api_email import subscribe_to_newsletter_api
-from handlers.email_handler import error_handler
 
-app = web.Application(middlewares=[error_handler])
+app = web.Application()
 
 cors = aiohttp_cors.setup(app, defaults={
     "http://localhost:8080": aiohttp_cors.ResourceOptions(
