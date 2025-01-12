@@ -5,7 +5,7 @@
       <div class="top-links">
         <a href="/store-locator">Find a Store</a>
         <a href="/contact_us">Contact Us</a>
-        <a href="/exhibitions">Current Exhibitions</a>
+        <a href="/news/news_feed">News Feed</a>
       </div>
     </div>
   </div>

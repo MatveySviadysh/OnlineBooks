@@ -6,7 +6,7 @@ import AuthorsList from '@/components/common/AuthorsList.vue'
 import ProfilePage from '@/components/common/ProfilePage.vue'
 import AllBooks from '@/components/common/AllBooks.vue'
 import ContactUs from '@/components/common/ContactUs.vue'
-
+import News_Feed from '@/components/common/News_Feed.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,6 +45,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/contact_us',
     name: 'ContactUs',
     component: ContactUs,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/news/news_feed',
+    name: 'News_Feed',
+    component: News_Feed,
     meta: { requiresAuth: true }
   }
 ]
