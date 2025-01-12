@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <splash-screen />
     <img src="@/assets/main.jpg" alt="">
     <BookTicker />
     <BooksList />
@@ -27,10 +28,12 @@ import '@/styles/components/common/HomePage.scss'
 import BookTicker from '../help/BookTicker.vue'
 import CookieConsent from '../help/CookieConsent.vue'
 import BooksList from '../help/BooksList.vue'
+import SplashScreen from '@/components/help/SplashScreen.vue'
 
 export default defineComponent({
   name: 'HomePage',
   components: {
+    SplashScreen,
     BookTicker,
     CookieConsent,
     BooksList,

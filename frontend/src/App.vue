@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <splash-screen />
     <AppHeader />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
@@ -14,14 +13,12 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import SplashScreen from '@/components/help/SplashScreen.vue'
   import AppFooter from '@/components/layout/Footer.vue'
   import AppHeader from '@/components/layout/Header.vue'
   
   export default defineComponent({
     name: 'App',
     components: {
-      SplashScreen,
       AppFooter,
       AppHeader
     }
