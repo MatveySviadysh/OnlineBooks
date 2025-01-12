@@ -14,6 +14,7 @@ async def send_email(sender_email, sender_password, recipient_email, subject, bo
             server.starttls()
             server.login(sender_email, sender_password)
             server.send_message(msg)
+
         return True, f"Письмо успешно отправлено на {recipient_email}"
     except Exception as e:
         return False, f"Ошибка при отправке письма: {e}"

@@ -1,6 +1,6 @@
 from aiohttp import web
 import aiohttp_cors
-from api.api_email import send_email_api, subscribe_to_newsletter_api,handle_user_email_send
+from api.api_email import subscribe_to_newsletter_api
 from handlers.email_handler import error_handler
 
 app = web.Application(middlewares=[error_handler])
@@ -13,9 +13,7 @@ cors = aiohttp_cors.setup(app, defaults={
     )
 })
 
-app.router.add_post('/send_email', send_email_api)
 app.router.add_post('/subscribe', subscribe_to_newsletter_api)
-app.router.add_post('/send_user_email', handle_user_email_send)
 
 for route in list(app.router.routes()):
     cors.add(route)

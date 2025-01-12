@@ -27,7 +27,9 @@
           />
           <button type="submit">Subscribe</button>
         </form>
-        <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">{{ message }}</p>
+        <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
+          {{ message }}
+        </p>
       </div>
 
       <div class="footer-section social-media">
@@ -36,7 +38,7 @@
           <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
             <i class="fab fa-telegram"></i>
           </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
             <i class="fab fa-x-twitter"></i>
           </a>
           <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
@@ -79,9 +81,11 @@ export default defineComponent({
         const result = await response.json();
 
         if (result.success) {
-          // Message in English
           message.value = 'The invitation has been sent to your email!';
           isSuccess.value = true;
+        } else if (result.message) {
+          message.value = result.message; // Получаем сообщение об ошибке от сервера
+          isSuccess.value = false;
         } else {
           message.value = 'Something went wrong. Please try again.';
           isSuccess.value = false;
@@ -91,9 +95,8 @@ export default defineComponent({
         isSuccess.value = false;
       }
 
-      email.value = ''; // Clear input
+      email.value = '';
 
-      // Set timeout to clear the message after 1 minute
       setTimeout(() => {
         message.value = '';
       }, 60000); // 60000ms = 1 minute
