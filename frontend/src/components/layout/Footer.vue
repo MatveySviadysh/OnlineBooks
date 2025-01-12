@@ -9,7 +9,7 @@
           <p>Dec 24: 10:00 - 14:00</p>
         </div>
         <div class="contact-info">
-          <a href="mailto:support@example.com" class="email">
+          <a href="/contact_us" class="email">
             <i class="far fa-envelope"></i> Email Us
           </a>
         </div>

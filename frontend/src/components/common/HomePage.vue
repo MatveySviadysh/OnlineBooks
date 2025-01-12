@@ -4,9 +4,8 @@
     <BookTicker />
     <BooksList />
     <div class="map-container">
-      <h2>Локация</h2>
       <l-map
-        style="height: 400px; width: 100%;"
+        style="height: 600px; width: 100%;"
         :zoom="zoom"
         :center="center"
       >
@@ -57,6 +56,11 @@ export default defineComponent({
 .map-container {
   margin: 2rem 0;
   text-align: center;
+  height: 600px; /* Пример фиксированной высоты для контейнера */
+}
+
+l-map {
+  height: 100%; /* Карта займет всю высоту контейнера */
+  width: 100%;
 }
 </style>
-

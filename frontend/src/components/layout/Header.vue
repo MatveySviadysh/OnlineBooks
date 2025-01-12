@@ -4,14 +4,13 @@
     <div class="top-bar-content">
       <div class="top-links">
         <a href="/store-locator">Find a Store</a>
-        <a href="/contact">Contact Us</a>
+        <a href="/contact_us">Contact Us</a>
         <a href="/exhibitions">Current Exhibitions</a>
       </div>
     </div>
   </div>
   
   <header class="main-header">
-    <!-- Боковая панель меню -->
     <div class="side-menu" :class="{ 'is-open': isMenuOpen }">
       <div class="menu-header">
         <button class="close-menu" @click="toggleMenu">
@@ -32,11 +31,9 @@
       </nav>
     </div>
 
-    <!-- Затемнение фона при открытом меню -->
     <div class="menu-overlay" :class="{ 'is-visible': isMenuOpen }" @click="toggleMenu"></div>
 
     <div class="header-content">
-      <!-- Левая часть -->
       <div class="left-actions">
         <div class="menu-wrapper" @click="toggleMenu">
           <i class="fas fa-bars"></i>
@@ -53,12 +50,10 @@
         </div>
       </div>
 
-      <!-- Лого по центру -->
       <div class="logo" :class="{ 'hide': isSearchFocused }">
         <a href="/" class="logo-link">Art Gallery</a>
       </div>
 
-      <!-- Правая часть -->
       <div class="right-actions">
         <div class="account-wrapper">
           <router-link to="/profile" class="account-link">
