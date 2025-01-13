@@ -1,5 +1,4 @@
 <template>
-  <!-- Добавляем top-bar перед main-header -->
   <div class="top-bar">
     <div class="top-bar-content">
       <div class="top-links">

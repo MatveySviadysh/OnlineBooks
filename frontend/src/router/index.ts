@@ -7,6 +7,7 @@ import ProfilePage from '@/components/common/ProfilePage.vue'
 import AllBooks from '@/components/common/AllBooks.vue'
 import ContactUs from '@/components/common/ContactUs.vue'
 import News_Feed from '@/components/common/News_Feed.vue'
+import Quotes_Book from '@/components/common/QuotationBook.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -52,7 +53,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'News_Feed',
     component: News_Feed,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/quotes/quotes_book',
+    name: 'Quotes_Book',
+    component: Quotes_Book,
+    meta: { requiresAuth: true }
   }
+
 ]
 
 

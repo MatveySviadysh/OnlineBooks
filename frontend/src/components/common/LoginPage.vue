@@ -78,7 +78,7 @@ export default defineComponent({
 
         if (response.status === 200) {
           // Успешный вход, перенаправляем на главную
-          this.$router.push('/')
+          this.$router.push('/profile')
         }
         
       } catch (error: any) {

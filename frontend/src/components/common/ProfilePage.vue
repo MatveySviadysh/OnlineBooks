@@ -1,33 +1,47 @@
 <template>
-  <div class="profile">
-    <h1>Профиль пользователя</h1>
-    
-    <div v-if="loading" class="loading">
-      Загрузка...
-    </div>
-
-    <div v-else-if="error" class="error">
-      {{ error }}
-      <div class="error-actions">
-        <router-link to="/login" class="login-link">Войти</router-link>
+  <div class="profile-container">
+    <div class="menu-block">
+      <div class="profile-actions">
+        <a href="/account" class="word-Account">Account</a><br>
+        <a href="/history" class="word-History">History</a><br>
+        <a href="/history" class="word-History">History</a><br>
+        <a href="/history" class="word-History">History</a><br>
+        <a href="/history" class="word-History-last">History</a><br>
+        <hr class="menu-line">
+        <a @click="logout" class="logout-button" role="button">sing out</a>
       </div>
     </div>
 
-    <div v-else-if="user" class="profile-content">
-      <div class="profile-info">
-        <h2>Личные данные</h2>
-        <div class="info-item">
-          <span class="label">Email:</span>
-          <span class="value">{{ user.email }}</span>
+
+      <div v-if="loading" class="loading">
+        Загрузка...
+      </div>
+
+      <div v-else-if="error" class="error">
+        {{ error }}
+        <div class="error-actions">
+          <router-link to="/login" class="login-link">Войти</router-link>
         </div>
       </div>
 
-      <div class="profile-actions">
-        <button @click="logout" class="logout-button">Выйти из аккаунта</button>
-      </div>
+      <div v-else-if="user" class="profile-content">
+        <div class="profile-info">
+          <div class="header-info">
+            <div class="title-info">Profile Information</div>
+            <div class="around-circle">
+              <i class="fas fa-pencil-alt icon-info"></i>
+            </div>
+          </div>
+          <hr class="line-info">
+          <div class="info-item">
+            <span class="label">Email:</span>
+            <span class="value">{{ user.email }}</span>
+          </div>
+        </div>
     </div>
   </div>
 </template>
+
 
 <script lang="ts">
 import { defineComponent } from 'vue'

@@ -4,10 +4,11 @@
     <img src="@/assets/main.jpg" alt="">
     <BookTicker />
     <BooksList />
+    <BlockComments />
     <div class="map-container">
       <l-map
         style="height: 600px; width: 100%;"
-        :zoom="zoom"
+        :zoom="zoom"  
         :center="center"
       >
         <l-tile-layer
@@ -29,10 +30,11 @@ import BookTicker from '../help/BookTicker.vue'
 import CookieConsent from '../help/CookieConsent.vue'
 import BooksList from '../help/BooksList.vue'
 import SplashScreen from '@/components/help/SplashScreen.vue'
-
+import BlockComments from '../help/BlockComments.vue';
 export default defineComponent({
   name: 'HomePage',
   components: {
+    BlockComments,
     SplashScreen,
     BookTicker,
     CookieConsent,
