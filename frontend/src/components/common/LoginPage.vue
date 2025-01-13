@@ -39,6 +39,11 @@
         <router-link to="/register">Регистрация</router-link>
       </div>
     </div>
+
+    <!-- Сообщение об успешном входе -->
+    <div v-if="successMessage" class="success-popup">
+      <p>{{ successMessage }}</p>
+    </div>
   </div>
 </template>
 
@@ -56,13 +61,15 @@ export default defineComponent({
         password: ''
       },
       loading: false,
-      error: ''
+      error: '',
+      successMessage: ''  // Новая переменная для хранения сообщения об успешном входе
     }
   },
   methods: {
     async handleSubmit() {
       this.loading = true
       this.error = ''
+      this.successMessage = ''  // Очищаем сообщение при каждом новом запросе
 
       try {
         const response = await axios.post('http://localhost:8001/api/users/login', {
@@ -77,8 +84,11 @@ export default defineComponent({
         })
 
         if (response.status === 200) {
-          // Успешный вход, перенаправляем на главную
-          this.$router.push('/profile')
+          // Успешный вход
+          this.successMessage = 'Вход выполнен успешно!';  // Устанавливаем сообщение об успешном входе
+          setTimeout(() => {
+            this.$router.push('/profile')  // Переходим на страницу профиля
+          }, 2000);  // Задержка перед переходом для отображения сообщения
         }
         
       } catch (error: any) {
@@ -95,3 +105,46 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped>
+/* Стили для всплывающего сообщения об успешном входе */
+.success-popup {
+  background-color: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  position: fixed;
+  top: 70px; /* Сдвигаем окно на 50px ниже */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 1s forwards, fadeOut 1s 2s forwards;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Анимация исчезновения */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+</style>

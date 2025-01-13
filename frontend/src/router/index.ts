@@ -8,6 +8,8 @@ import AllBooks from '@/components/common/AllBooks.vue'
 import ContactUs from '@/components/common/ContactUs.vue'
 import News_Feed from '@/components/common/News_Feed.vue'
 import Quotes_Book from '@/components/common/QuotationBook.vue'
+import WriteComment from '@/components/common/WriteComment.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -58,6 +60,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/quotes/quotes_book',
     name: 'Quotes_Book',
     component: Quotes_Book,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/comments/write_comments',
+    name: 'WriteComment',
+    component: WriteComment,
     meta: { requiresAuth: true }
   }
 

@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 class CommentBase(BaseModel):
-    user_id: str
+    user_id: Optional[str] = None
     text: str = Field(..., max_length=1000)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
