@@ -11,6 +11,8 @@ class BookBase(BaseModel):
     page_count: int
     rating: float = Field(default=1.0, ge=1.0, le=5.0)
     file_url: str 
+    image: str
+
 
 class BookCreate(BookBase):
     pass
@@ -27,6 +29,7 @@ class BookUpdate(BaseModel):
 class BookResponse(BookBase):
     id: str = Field(alias="_id")
     file_url: str 
+    image: str
     created_at: datetime
     updated_at: datetime
 

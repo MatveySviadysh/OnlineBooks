@@ -1,20 +1,14 @@
 <template>
-  <div class="top-bar">
-    <div class="top-bar-content">
-      <div class="top-links">
-        <a href="/store-locator">Find a Store</a>
-        <a href="/contact_us">Contact Us</a>
-        <a href="/news/news_feed">News Feed</a>
-      </div>
-    </div>
-  </div>
-  
-  <header class="main-header">
-    <div class="side-menu" :class="{ 'is-open': isMenuOpen }">
+  <div class="side-menu" :class="{ 'is-open': isMenuOpen }">
       <div class="menu-header">
         <button class="close-menu" @click="toggleMenu">
           <i class="fas fa-times"></i>
         </button>
+      </div>
+      <div 
+        class="menu-overlay" 
+        :class="{ 'is-visible': isMenuOpen }" 
+        @click="toggleMenu">
       </div>
       <nav class="menu-links">
         <a href="#" class="menu-link">Text 1</a>
@@ -29,6 +23,17 @@
         <a href="#" class="menu-link">Text 10</a>
       </nav>
     </div>
+  <header class="main-header">
+    <div class="top-bar">
+    <div class="top-bar-content">
+      <div class="top-links">
+        <a href="/store-locator">Find a Store</a>
+        <a href="/contact_us">Contact Us</a>
+        <a href="/news/news_feed">News Feed</a>
+      </div>
+    </div>
+  </div>
+    
 
     <div class="menu-overlay" :class="{ 'is-visible': isMenuOpen }" @click="toggleMenu"></div>
 
@@ -77,7 +82,8 @@ export default defineComponent({
 
     const toggleMenu = () => {
       isMenuOpen.value = !isMenuOpen.value
-      document.body.style.overflow = isMenuOpen.value ? 'hidden' : ''
+      // Добавляем или удаляем класс для отключения прокрутки
+      document.body.classList.toggle('no-scroll', isMenuOpen.value)
     }
 
     return {
@@ -88,3 +94,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+/* Стили для предотвращения прокрутки */
+body.no-scroll {
+  overflow: hidden; /* Отключает прокрутку страницы */
+}
+</style>

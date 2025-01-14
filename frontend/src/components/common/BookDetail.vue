@@ -5,13 +5,19 @@
       <p><strong>Жанр:</strong> {{ book.genre }}</p>
       <p><strong>Дата публикации:</strong> {{ book.publication_date }}</p>
       <p><strong>Язык:</strong> {{ book.language }}</p>
+      <p><strong>URL изображения:</strong> {{ book.image }}</p>
+  
+      <img :src="book.image" alt="Обложка книги"  />
+
+
       <p><strong>Количество страниц:</strong> {{ book.page_count }}</p>
       <p><strong>Рейтинг:</strong> {{ book.rating }}</p>
       <p><strong>Ссылка на файл:</strong> {{ book.file_url }}</p>
       <p><strong>ID книги:</strong> {{ id }}</p>
+  
       <button @click="goToBookReader">Читать книгу</button>
       <button @click="getBookContent">Получить текст книги</button>
-      
+  
       <div v-if="content">
         <h2>Содержимое книги:</h2>
         <pre>{{ content }}</pre>

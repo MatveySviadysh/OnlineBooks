@@ -15,6 +15,7 @@ def book_helper(book: dict) -> dict:
         "page_count": book.get("page_count", 0),
         "rating": book.get("rating", 0.0),
         "file_url": book["file_url"], 
+        "image": book["image"],
         "created_at": book.get("created_at", datetime.utcnow()),
         "updated_at": book.get("updated_at", datetime.utcnow())
     }
