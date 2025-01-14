@@ -6,12 +6,26 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from schemas.book import BookCreate, BookUpdate, BookResponse
 from api.book.helper_book import book_helper
 from datetime import datetime, timedelta
+import aiofiles
+import os 
+import aiohttp
+
 
 class CRUDBook:
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
         self.collection = db.books
 
+    async def get_file_content(self, file_url: str) -> str:
+        """Получение содержимого файла по URL"""
+        async with aiohttp.ClientSession() as session:
+            async with session.get(file_url) as response:
+                if response.status != 200:
+                    raise HTTPException(status_code=404, detail="Файл не найден")
+                content = await response.text()
+        return content
+
+        
     async def create(self, book: BookCreate) -> BookResponse:
         """Создание новой книги"""
         new_book = book.dict()

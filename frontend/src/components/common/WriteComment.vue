@@ -45,7 +45,7 @@
             console.log('Комментарий успешно создан:', data);
   
             // Показываем сообщение об успешной отправке
-            this.successMessage = 'Комментарий успешно отправлен!';
+            this.successMessage = 'Comment sent successfully!';
   
             // Очищаем поле ввода
             this.text = '';

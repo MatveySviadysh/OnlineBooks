@@ -15,6 +15,19 @@ async def create_book(book: BookCreate, db = Depends(get_database)):
     crud_book = get_book_crud(db)
     return await crud_book.create(book)
 
+@router.get("/content/{book_id}", response_model=str)
+async def get_book_content(book_id: str, db = Depends(get_database)):
+    crud_book = get_book_crud(db)  # Получаем CRUD объект
+    book = await crud_book.get_by_id(book_id)  # Получаем книгу по ID
+    if not book:
+        raise HTTPException(status_code=404, detail="Книга не найдена")
+    file_url = book.get("file_url")  # Используем get для безопасного доступа к ключу 
+    if file_url is None:
+        raise HTTPException(status_code=404, detail="URL файла не найден")
+    content = await crud_book.get_file_content(file_url)  # Получаем содержимое файла
+    return content
+
+
 @router.get("/search", response_model=List[BookResponse])
 async def search_books(query: str, db = Depends(get_database)):
     crud_book = get_book_crud(db)

@@ -20,23 +20,23 @@
         </div>
 
         <div class="form-group">
-          <label for="password">Пароль:</label>
+          <label for="password">Password:</label>
           <input 
             type="password" 
             id="password"
             v-model="formData.password"
             required
-            placeholder="Введите пароль"
+            placeholder="Enter your password"
           >
         </div>
 
         <button type="submit" :disabled="loading">
-          {{ loading ? 'Вход...' : 'Войти' }}
+          {{ loading ? 'Login...' : 'Login' }}
         </button>
       </form>
 
       <div class="additional-links">
-        <router-link to="/register">Регистрация</router-link>
+        <router-link to="/register">Registration</router-link>
       </div>
     </div>
 
@@ -85,7 +85,7 @@ export default defineComponent({
 
         if (response.status === 200) {
           // Успешный вход
-          this.successMessage = 'Вход выполнен успешно!';  // Устанавливаем сообщение об успешном входе
+          this.successMessage = 'Login successful!';  // Устанавливаем сообщение об успешном входе
           setTimeout(() => {
             this.$router.push('/profile')  // Переходим на страницу профиля
           }, 2000);  // Задержка перед переходом для отображения сообщения
@@ -93,7 +93,7 @@ export default defineComponent({
         
       } catch (error: any) {
         if (error.response) {
-          this.error = error.response.data.detail || 'Неверный email или пароль'
+          this.error = error.response.data.detail || 'Invalid email or password'
         } else {
           this.error = 'Ошибка сервера. Попробуйте позже.'
         }
@@ -108,7 +108,7 @@ export default defineComponent({
 <style scoped>
 /* Стили для всплывающего сообщения об успешном входе */
 .success-popup {
-  background-color: white;
+  background-color: #fffdf8;
   color: #333;
   padding: 20px;
   border-radius: 8px;

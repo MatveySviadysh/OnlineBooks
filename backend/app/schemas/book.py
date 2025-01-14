@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
+from typing import Optional
 
 class BookBase(BaseModel):
     title: str = Field(..., max_length=200, unique=True)
@@ -9,6 +10,7 @@ class BookBase(BaseModel):
     language: str
     page_count: int
     rating: float = Field(default=1.0, ge=1.0, le=5.0)
+    file_url: str 
 
 class BookCreate(BookBase):
     pass
@@ -24,6 +26,7 @@ class BookUpdate(BaseModel):
 
 class BookResponse(BookBase):
     id: str = Field(alias="_id")
+    file_url: str 
     created_at: datetime
     updated_at: datetime
 
@@ -32,4 +35,4 @@ class BookResponse(BookBase):
         populate_by_name = True
         json_encoders = {
             datetime: lambda dt: dt.strftime("%d-%m-%Y")
-        } 
+        }

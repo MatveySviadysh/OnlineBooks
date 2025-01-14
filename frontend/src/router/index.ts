@@ -9,6 +9,8 @@ import ContactUs from '@/components/common/ContactUs.vue'
 import News_Feed from '@/components/common/News_Feed.vue'
 import Quotes_Book from '@/components/common/QuotationBook.vue'
 import WriteComment from '@/components/common/WriteComment.vue'
+import BookDetail from '@/components/common/BookDetail.vue'
+import BookReader from '@/components/common/BookReader.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -67,8 +69,19 @@ const routes: Array<RouteRecordRaw> = [
     name: 'WriteComment',
     component: WriteComment,
     meta: { requiresAuth: true }
-  }
-
+  },
+  {
+    path: '/book/:id',
+    name: 'BookDetail',
+    component: BookDetail,
+    props: true,
+  },
+  {
+    path: '/book/read/:id',
+    name: 'BookReader',
+    component: BookReader,
+    props: true,
+  },
 ]
 
 

@@ -28,12 +28,18 @@
       </div>
       <div :class="['books-list', viewMode]">
         <div v-for="book in popularBooks" 
-             :key="book.id" 
+             :key="book._id" 
              :class="['book-card', viewMode]">
           <img :src="book.cover" :alt="book.title" />
           <div class="book-info">
             <h3>{{ book.title }}</h3>
             <StarRating :rating="book.rating" />
+            <router-link 
+              :to="{ name: 'BookDetail', params: { id: book._id } }" 
+              class="details-button"
+            >
+              Подробнее
+            </router-link>
           </div>
         </div>
       </div>
@@ -54,6 +60,12 @@
           <img :src="book.cover" :alt="book.title" />
           <h3>{{ book.title }}</h3>
           <StarRating :rating="book.rating" />
+          <router-link 
+            :to="{ name: 'BookDetail', params: { id: book._id } }" 
+            class="details-button"
+          >
+            Подробнее
+          </router-link>
         </div>
       </div>
     </div>
@@ -92,6 +104,7 @@ export default {
 </script>
 
 <style scoped>
+/* Ваши стили остаются без изменений */
 .books-container {
   display: flex;
   flex-direction: column;
@@ -132,6 +145,16 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.details-button {
+  margin-top: 0.5rem;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.details-button:hover {
+  text-decoration: underline;
 }
 
 .left-section {
