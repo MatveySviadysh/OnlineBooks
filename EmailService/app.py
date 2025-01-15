@@ -14,6 +14,7 @@ cors = aiohttp_cors.setup(app, defaults={
 
 app.router.add_post('/subscribe', subscribe_to_newsletter_api)
 app.router.add_post('/newsletter', newsletter_handler)
+app.router.add_post('/send_user_email', send_user_email)
 
 for route in list(app.router.routes()):
     cors.add(route)
