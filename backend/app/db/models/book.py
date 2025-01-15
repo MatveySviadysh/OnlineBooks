@@ -19,6 +19,7 @@ class Book(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     file_url: Optional[str] = None
+    audio_file_path:  Optional[str] = None
 
     class Config:
         orm_mode = True

@@ -11,7 +11,7 @@ import Quotes_Book from '@/components/common/QuotationBook.vue'
 import WriteComment from '@/components/common/WriteComment.vue'
 import BookDetail from '@/components/common/BookDetail.vue'
 import BookReader from '@/components/common/BookReader.vue'
-
+import BookListen from '@/components/common/BookListen.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -82,6 +82,12 @@ const routes: Array<RouteRecordRaw> = [
     component: BookReader,
     props: true,
   },
+  {
+    path: '/book/listen/:id',
+    name: 'BookListen',
+    component: BookListen,
+    props: true,
+  }
 ]
 
 
