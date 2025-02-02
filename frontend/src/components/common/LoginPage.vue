@@ -1,7 +1,6 @@
 <template>
   <div class="login-container">
     <div class="login-form">
-      <h2>Вход в систему</h2>
       
       <div class="alert error" v-if="error">
         {{ error }}
@@ -9,28 +8,31 @@
 
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
-          <label for="email">E-mail *</label>
           <input 
             type="email" 
             id="email"
             v-model="formData.email"
             required
-            placeholder="yourname@domain.com"
+            placeholder="E-mail"
           >
         </div>
 
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input 
-            type="password" 
-            id="password"
-            v-model="formData.password"
-            required
-            placeholder="Enter your password"
-          >
+        <div class="form-group password-group">
+            <p type="button" class="toggle-password" @click="togglePassword">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </p>
+          <div class="password-container">
+            <input 
+              :type="showPassword ? 'text' : 'password'" 
+              id="password"
+              v-model="formData.password"
+              required
+              placeholder="Password"
+            >
+          </div>
         </div>
 
-        <button type="submit" :disabled="loading">
+        <button class="login-button" type="submit" :disabled="loading">
           {{ loading ? 'Login...' : 'Login' }}
         </button>
       </form>
@@ -62,7 +64,8 @@ export default defineComponent({
       },
       loading: false,
       error: '',
-      successMessage: ''  // Новая переменная для хранения сообщения об успешном входе
+      successMessage: '',  // Новая переменная для хранения сообщения об успешном входе
+      showPassword: false  // Управление отображением пароля
     }
   },
   methods: {
@@ -101,6 +104,9 @@ export default defineComponent({
       } finally {
         this.loading = false
       }
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword;
     }
   }
 })

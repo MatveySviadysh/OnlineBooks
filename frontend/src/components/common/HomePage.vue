@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <splash-screen />
-    <img src="@/assets/main.jpg" alt="">
+    <splash-screen v-if="isSplashVisible" />
+    <img src="@/assets/main.jpg" alt="Main Image">
     <BookTicker />
     <BooksList />
     <BlockComments />
@@ -18,11 +18,12 @@
       </l-map>
     </div>
     <CookieConsent />
+    <MobileApp />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { LMap, LTileLayer, LMarker } from "vue3-leaflet";
 import "leaflet/dist/leaflet.css";
 import '@/styles/components/common/HomePage.scss'
@@ -31,6 +32,9 @@ import CookieConsent from '../help/CookieConsent.vue'
 import BooksList from '../help/BooksList.vue'
 import SplashScreen from '@/components/help/SplashScreen.vue'
 import BlockComments from '../help/BlockComments.vue';
+import MobileApp from '../help/MobileApp.vue';
+
+
 export default defineComponent({
   name: 'HomePage',
   components: {
@@ -42,16 +46,31 @@ export default defineComponent({
     LMap,
     LTileLayer,
     LMarker,
+    MobileApp,
   },
   setup() {
     const center = ref<[number, number]>([51.505, -0.09]); // Координаты центра карты
     const zoom = ref(13); // Зум карты
     const marker = ref<[number, number]>([51.505, -0.09]); // Координаты маркера
+    const isSplashVisible = ref(true); // Флаг для отображения SplashScreen
+
+    onMounted(() => {
+      // Проверка на наличие записи в sessionStorage
+      const isSplashAlreadyShown = sessionStorage.getItem('splashShown');
+
+      if (isSplashAlreadyShown) {
+        isSplashVisible.value = false; // Если уже показывали, скрываем SplashScreen
+      } else {
+        // Если это первый заход на вкладке, сохраняем в sessionStorage
+        sessionStorage.setItem('splashShown', 'true');
+      }
+    });
 
     return {
       center,
       zoom,
-      marker
+      marker,
+      isSplashVisible
     };
   }
 });

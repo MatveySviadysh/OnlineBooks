@@ -12,6 +12,11 @@ import WriteComment from '@/components/common/WriteComment.vue'
 import BookDetail from '@/components/common/BookDetail.vue'
 import BookReader from '@/components/common/BookReader.vue'
 import BookListen from '@/components/common/BookListen.vue'
+import Storage from '@/components/common/Storge.vue'
+import StoreLocator from '@/components/common/StoreLocator.vue'
+import MobileApp from '@/components/help/MobileApp.vue'
+import AuthorDetail from '@/components/help/AuthorDetail.vue'
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -87,7 +92,29 @@ const routes: Array<RouteRecordRaw> = [
     name: 'BookListen',
     component: BookListen,
     props: true,
+  },
+  {
+    path: '/account/storege',
+    name: 'Storage',
+    component: Storage,
+  },
+  {
+    path: '/store-locator',
+    name: 'StoreLocator',
+    component:StoreLocator,
+  },
+  {
+    path: '/mobile-app',
+    name: 'MobileApp',
+    component:MobileApp
+  },
+  {
+    path: '/authors/details/:id',
+    name: 'AuthorDetail',
+    component: AuthorDetail,
+    props: true,
   }
+  
 ]
 
 

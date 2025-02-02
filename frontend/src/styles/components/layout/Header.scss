@@ -209,23 +209,42 @@
 
 .menu-header {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  justify-content: space-between; /* Размещение элементов по краям */
+  align-items: center; /* Центрирование элементов по вертикали */
+  padding: 15px 20px; /* Отступы для эстетики */
+}
+
+.menu-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0; /* Убираем отступы по умолчанию */
 }
 
 .close-menu {
-  border: none;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
-  padding: 5px;
-  color: #333333;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.close-menu:hover {
+  color: #2a2a2a; /* Цвет при наведении */
+}
+
+.menu-footer {
+  background-color: #f8f4ef;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  width: 476px; 
+  height: 200px;/* На всю ширину */
 }
 
 .menu-links {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-
+  background-color: #ffffff;
 }
 
 .menu-link {
@@ -235,31 +254,13 @@
   letter-spacing: 0.5px;
   transition: color 0.2s ease;
   padding: 5px 0;
+  background-color: transparent; /* Убираем фон */
+  border: none; /* Убираем границу */
 }
 
 .menu-link:hover {
   color: #000000;
 }
-
-.menu-overlay {
-  position: fixed; /* Фиксированное позиционирование для полноэкранного эффекта */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  margin-left: 475px;
-  background: rgba(140, 140, 140, 0.5); /* Полупрозрачный серый фон */
-  z-index: 1000; /* Убедитесь, что это значение достаточное для перекрытия других элементов */
-  opacity: 0; /* По умолчанию скрыто */
-  visibility: hidden; /* Невидимый слой */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавное изменение */
-}
-
-.menu-overlay.is-visible {
-  opacity: 1; /* Видимый при активации класса */
-  visibility: visible; /* Показывает элемент */
-}
-
 
 
 /* Адаптивность */
@@ -294,4 +295,33 @@
   .main-header {
     padding: 6px 8px;
   }
+}
+
+.storage-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 13px;
+  color: #333333;
+}
+
+/* Подменю для категорий */
+.submenu {
+  display: flex;
+  flex-direction: column; /* Выстраиваем элементы в столбик */
+  padding-left: 20px; /* Отступ для подменю */
+}
+
+/* Ссылки в подменю */
+.submenu-link {
+  color: #333333;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+  padding: 5px 0;
+}
+
+.submenu-link:hover {
+  color: #000000;
 }
