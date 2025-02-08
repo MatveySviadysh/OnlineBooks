@@ -80,6 +80,17 @@ class CRUDBook:
         """Получение общего количества книг"""
         return await self.collection.count_documents({})
 
+    async def get_average_rating(self) -> float:
+        """Получение среднего рейтинга всех книг"""
+        pipeline = [
+            {"$group": {"_id": None, "average_rating": {"$avg": "$rating"}}}
+        ]
+        result = await self.collection.aggregate(pipeline).to_list(None)
+        if result:
+            return result[0]["average_rating"]
+        return 0.0
+
+    
     async def update(self, book_id: str, book_data: BookUpdate) -> BookResponse:
         """Обновление существующей книги"""
         try:

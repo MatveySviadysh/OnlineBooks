@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <splash-screen v-if="isSplashVisible" />
-    <img src="@/assets/main.jpg" alt="Main Image">
+    <HederHome />
     <BookTicker />
     <BooksList />
     <BlockComments />
@@ -18,7 +18,10 @@
       </l-map>
     </div>
     <CookieConsent />
+    <RecomendBooks />
     <MobileApp />
+    
+    <InfoService />
   </div>
 </template>
 
@@ -33,6 +36,9 @@ import BooksList from '../help/BooksList.vue'
 import SplashScreen from '@/components/help/SplashScreen.vue'
 import BlockComments from '../help/BlockComments.vue';
 import MobileApp from '../help/MobileApp.vue';
+import InfoService from '../help/InfoService.vue';
+import HederHome from '../help/HederHome.vue';
+import RecomendBooks from '../help/RecomendBooks.vue';
 
 
 export default defineComponent({
@@ -47,21 +53,22 @@ export default defineComponent({
     LTileLayer,
     LMarker,
     MobileApp,
+    InfoService,
+    HederHome,
+    RecomendBooks,
   },
   setup() {
-    const center = ref<[number, number]>([51.505, -0.09]); // Координаты центра карты
-    const zoom = ref(13); // Зум карты
-    const marker = ref<[number, number]>([51.505, -0.09]); // Координаты маркера
-    const isSplashVisible = ref(true); // Флаг для отображения SplashScreen
+    const center = ref<[number, number]>([51.505, -0.09]);
+    const zoom = ref(13);
+    const marker = ref<[number, number]>([51.505, -0.09]);
+    const isSplashVisible = ref(true);
 
     onMounted(() => {
-      // Проверка на наличие записи в sessionStorage
       const isSplashAlreadyShown = sessionStorage.getItem('splashShown');
 
       if (isSplashAlreadyShown) {
-        isSplashVisible.value = false; // Если уже показывали, скрываем SplashScreen
+        isSplashVisible.value = false;
       } else {
-        // Если это первый заход на вкладке, сохраняем в sessionStorage
         sessionStorage.setItem('splashShown', 'true');
       }
     });
@@ -80,11 +87,11 @@ export default defineComponent({
 .map-container {
   margin: 2rem 0;
   text-align: center;
-  height: 600px; /* Пример фиксированной высоты для контейнера */
+  height: 600px;
 }
 
-l-map {
-  height: 100%; /* Карта займет всю высоту контейнера */
+.l-map {
+  height: 100%;
   width: 100%;
 }
 </style>

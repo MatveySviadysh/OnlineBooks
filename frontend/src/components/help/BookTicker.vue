@@ -58,8 +58,8 @@ export default defineComponent({
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   overflow: hidden;
-  background: #f8f9fa;
-  padding: 10px 0;
+  background: #f8f4ef;
+  padding: 40px 0;
   user-select: none;
 }
 

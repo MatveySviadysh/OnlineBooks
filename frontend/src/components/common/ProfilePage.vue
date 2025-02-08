@@ -3,45 +3,43 @@
     <div class="menu-block">
       <div class="profile-actions">
         <a href="/account" class="word-Account">Account</a><br>
-        <a href="/history" class="word-History">History</a><br>
-        <a href="/history" class="word-History">History</a><br>
-        <a href="/history" class="word-History">History</a><br>
-        <a href="/history" class="word-History-last">History</a><br>
+        <a href="/all_books" class="word-History">Books</a><br>
+        <a href="/account/storege" class="word-History">Storage</a><br>
+        <a href="/authors" class="word-History">Authors</a><br>
+        <a href="/news/news_feed" class="word-History-last">News Feed</a><br>
         <hr class="menu-line">
-        <a @click="logout" class="logout-button" role="button">sing out</a>
+        <a @click="logout" class="logout-button" role="button">Sign Out</a>
       </div>
     </div>
 
+    <div v-if="loading" class="loading">
+      Loading...
+    </div>
 
-      <div v-if="loading" class="loading">
-        Загрузка...
+    <div v-else-if="error" class="error">
+      {{ error }}
+      <div class="error-actions">
+        <router-link to="/login" class="login-link">Login</router-link>
       </div>
+    </div>
 
-      <div v-else-if="error" class="error">
-        {{ error }}
-        <div class="error-actions">
-          <router-link to="/login" class="login-link">Войти</router-link>
-        </div>
-      </div>
-
-      <div v-else-if="user" class="profile-content">
-        <div class="profile-info">
-          <div class="header-info">
-            <div class="title-info">Profile Information</div>
-            <div class="around-circle">
-              <i class="fas fa-pencil-alt icon-info"></i>
-            </div>
-          </div>
-          <hr class="line-info">
-          <div class="info-item">
-            <span class="label">Email:</span>
-            <span class="value">{{ user.email }}</span>
+    <div v-else-if="user" class="profile-content">
+      <div class="profile-info">
+        <div class="header-info">
+          <div class="title-info">Profile Information</div>
+          <div class="around-circle">
+            <i class="fas fa-pencil-alt icon-info"></i>
           </div>
         </div>
+        <hr class="line-info">
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
 
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -50,7 +48,6 @@ import '@/styles/components/common/ProfilePage.scss'
 
 interface User {
   email: string;
-  // Добавьте другие поля пользователя при необходимости
 }
 
 export default defineComponent({
@@ -76,14 +73,14 @@ export default defineComponent({
           this.user = response.data
           this.error = ''
         } else {
-          this.error = 'Не удалось загрузить данные пользователя'
+          this.error = 'Failed to load user data'
         }
       } catch (error: any) {
         if (error.response?.status === 401) {
           this.$router.push('/login')
           return
         } else {
-          this.error = 'Ошибка при загрузке профиля'
+          this.error = 'Error loading profile'
         }
         console.error('Profile error:', error)
       } finally {

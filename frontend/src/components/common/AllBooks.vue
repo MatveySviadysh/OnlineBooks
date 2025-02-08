@@ -1,78 +1,123 @@
 <template>
-    <div class="all-books-container">
-      <h1>{{ pageTitle }}</h1>
-      <div class="books-grid">
-        <div v-for="book in books" :key="book.id" class="book-card">
-          <img :src="book.cover" :alt="book.title" />
-          <h3>{{ book.title }}</h3>
-          <StarRating :rating="book.rating" />
-        </div>
+  <div class="all-books-container">
+    <h1>{{ pageTitle }}</h1>
+    <div class="books-grid">
+      <div v-for="book in books" :key="book._id" class="book-card">
+        <router-link :to="{ name: 'BookDetail', params: { id: book._id } }">
+          <img :src="book.image" :alt="book.title" class="book-image" />
+          <div class="book-details">
+            <h3 class="book-title">{{ book.title }}</h3>
+            <div class="book-author">{{ book.author }}</div>
+            <StarRating :rating="book.rating" />
+          </div>
+        </router-link>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import StarRating from '@/components/help/StarRating.vue'
-  
-  export default {
-    name: 'AllBooks',
-    components: {
-      StarRating
-    },
-    data() {
-      return {
-        books: [],
-        type: ''
+  </div>
+</template>
+
+<script>
+import StarRating from '@/components/help/StarRating.vue';
+
+export default {
+  name: 'AllBooks',
+  components: {
+    StarRating,
+  },
+  data() {
+    return {
+      books: [],
+      type: '',
+    };
+  },
+  computed: {
+    pageTitle() {
+      switch (this.type) {
+        case 'popular':
+          return 'Популярные книги';
+        case 'recent':
+          return 'Новинки';
+        case 'audio':
+          return 'Аудиокниги';
+        case 'children':
+          return 'Книги для детей и родителей';
+        default:
+          return 'Все книги';
       }
     },
-    computed: {
-      pageTitle() {
-        return this.type === 'popular' ? 'Популярные книги' : 'Новинки'
-      }
-    },
-    async created() {
-      this.type = this.$route.query.type
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8001/api/books/books/${this.type}?skip=0&limit=100`
-        )
-        this.books = await response.json()
-      } catch (error) {
-        console.error('Ошибка при загрузке книг:', error)
-      }
+  },
+  async created() {
+    this.type = this.$route.query.type || 'popular'; // По умолчанию показываем популярные книги
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8001/api/books/books/${this.type}?skip=0&limit=100`
+      );
+      this.books = await response.json();
+    } catch (error) {
+      console.error('Ошибка при загрузке книг:', error);
     }
-  }
-  </script>
-  
-  <style scoped>
-  .all-books-container {
-    padding: 2rem;
-  }
-  
-  .books-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .book-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-  }
-  
-  .book-card img {
-    width: 150px;
-    height: 220px;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-  
-  .book-card h3 {
-    font-size: 1rem;
-    margin: 5px 0;
-  }
-  </style>
+  },
+};
+</script>
+
+<style scoped>
+.all-books-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.book-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.book-details {
+  padding: 1rem;
+  text-align: center;
+}
+
+.book-title {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.book-author {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+</style>

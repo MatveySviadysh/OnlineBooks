@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import AllBooks from '@/components/common/AllBooks.vue'
+import AuthorDetail from '@/components/help/AuthorDetail.vue'
+import AuthorsList from '@/components/common/AuthorsList.vue'
+import BookDetail from '@/components/common/BookDetail.vue'
+import BookListen from '@/components/common/BookListen.vue'
+import BookReader from '@/components/common/BookReader.vue'
+import ContactUs from '@/components/common/ContactUs.vue'
 import HomePage from '@/components/common/HomePage.vue'
 import LoginPage from '@/components/common/LoginPage.vue'
-import RegisterPage from '@/components/common/RegisterPage.vue'
-import AuthorsList from '@/components/common/AuthorsList.vue'
-import ProfilePage from '@/components/common/ProfilePage.vue'
-import AllBooks from '@/components/common/AllBooks.vue'
-import ContactUs from '@/components/common/ContactUs.vue'
+import MobileApp from '@/components/help/MobileApp.vue'
 import News_Feed from '@/components/common/News_Feed.vue'
+import ProfilePage from '@/components/common/ProfilePage.vue'
 import Quotes_Book from '@/components/common/QuotationBook.vue'
-import WriteComment from '@/components/common/WriteComment.vue'
-import BookDetail from '@/components/common/BookDetail.vue'
-import BookReader from '@/components/common/BookReader.vue'
-import BookListen from '@/components/common/BookListen.vue'
+import RegisterPage from '@/components/common/RegisterPage.vue'
 import Storage from '@/components/common/Storge.vue'
 import StoreLocator from '@/components/common/StoreLocator.vue'
-import MobileApp from '@/components/help/MobileApp.vue'
-import AuthorDetail from '@/components/help/AuthorDetail.vue'
-
+import WriteComment from '@/components/common/WriteComment.vue'
+import AllReadBooks from '@/components/common/AllReadBooks.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -113,8 +113,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AuthorDetail',
     component: AuthorDetail,
     props: true,
+  },
+  {
+    path: '/book/read',
+    name: 'AllReadBooks',
+    component: AllReadBooks 
   }
-  
 ]
 
 

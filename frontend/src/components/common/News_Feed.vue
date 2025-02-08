@@ -14,27 +14,18 @@
     </div>
 
     <div v-else>
-      <div v-for="(post, index) in posts" :key="post.id" class="news-post">
+      <div v-for="post in posts" :key="post.id" class="news-post">
         <img :src="post.image_url" alt="Post Image" class="post-image" />
         <p class="post-date">{{ formatDate(post.created_at) }}</p>
         <h2>{{ post.title }}</h2>
-        <button 
-          @click="togglePost(post.id)"
-          :class="{'no-border-line': index === 1}"
-        >
-          {{ expandedPosts[post.id] ? 'Collapse' : 'Read' }}
-        </button>
-        <div 
-          v-show="expandedPosts[post.id]" 
-          class="post-content"
-          :style="expandedPosts[post.id] ? { height: 'auto' } : { height: '0' }"
-        >
+        <div class="post-content">
           {{ post.content }}
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import '@/styles/components/common/News_Feed.scss';
@@ -44,7 +35,6 @@ export default {
     return {
       posts: [],
       isLoading: true,
-      expandedPosts: {},
     };
   },
   async mounted() {
@@ -66,9 +56,6 @@ export default {
           this.isLoading = false;
         }, 1000);
       }
-    },
-    togglePost(postId) {
-      this.expandedPosts[postId] = !this.expandedPosts[postId];
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -118,30 +105,6 @@ h2 {
   height: auto;
 }
 
-button {
-  background: #f8f4ef;
-  color: black;
-  border: 1px solid black;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
-  border-radius: 0;
-  font-size: 15px;
-  text-align: center;
-}
-
-button:hover {
-  padding: 10px 20px; /* Removed extra padding on hover */
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-}
-
-/* Remove the button hover animations */
-button:before, button:after {
-  content: none;
-}
-
-
 .post-content {
   margin-top: 15px;
   text-align: justify;
@@ -149,10 +112,7 @@ button:before, button:after {
   color: #333;
   line-height: 1.6;
   max-width: 100%;
-  overflow: hidden;
   white-space: pre-wrap;
-  height: 0;
-  transition: height 0.5s ease;
 }
 
 .loading-screen {
@@ -203,10 +163,4 @@ button:before, button:after {
     transform: rotateX(360deg) rotateY(360deg);
   }
 }
-
-/* Style to remove the border line for the second post */
-.no-border-line:before, .no-border-line:after {
-  content: none;
-}
-
 </style>

@@ -33,10 +33,12 @@
       </nav>
 
       <div class="menu-footer">
-        <a href="#" class="menu-link">Find a store</a><br>
-        <a href="#" class="menu-link">Account</a><br>
-        <a href="#" class="menu-link">Contact Us</a><br>
-      </div>
+        <div class="menu-text-links">
+          <a href="/store-locator" class="menu-link"><i class="fas fa-store"></i> Find a store</a><br>
+          <a href="/profile" class="menu-link"><i class="far fa-user"></i> Account</a><br>
+          <a href="/contact_us" class="menu-link"><i class="far fa-envelope"></i> Contact Us</a><br>
+        </div>
+      </div>    
     </div>
 
     <header class="main-header">
@@ -70,7 +72,7 @@
         </div>
 
         <div class="logo" :class="{ 'hide': isSearchFocused }">
-          <a href="/" class="logo-link">Art Gallery</a>
+          <a href="/" class="logo-link">Online Book</a>
         </div>
 
         <div class="right-actions">
@@ -98,7 +100,7 @@ export default defineComponent({
   setup() {
     const isMenuOpen = ref(false)
     const isSearchFocused = ref(false)
-    const openCategory = ref<string | null>(null) // To track the currently open category
+    const openCategory = ref<string | null>(null)
 
     const toggleMenu = () => {
       isMenuOpen.value = !isMenuOpen.value
