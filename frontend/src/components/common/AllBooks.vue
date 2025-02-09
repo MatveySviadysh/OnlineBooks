@@ -2,9 +2,9 @@
   <div class="all-books-container">
     <h1>{{ pageTitle }}</h1>
     <div class="books-grid">
-      <div v-for="book in books" :key="book._id" class="book-card">
-        <router-link :to="{ name: 'BookDetail', params: { id: book._id } }">
-          <img :src="book.image" :alt="book.title" class="book-image" />
+      <div v-for="book in displayBooks" :key="book._id" class="book-card">
+        <router-link :to="{ name: 'BookDetail', params: { id: book._id || book } }">
+          <img :src="getBookImage(book)" :alt="book.title" class="book-image" />
           <div class="book-details">
             <h3 class="book-title">{{ book.title }}</h3>
             <div class="book-author">{{ book.author }}</div>
@@ -26,8 +26,9 @@ export default {
   },
   data() {
     return {
-      books: [],
+      books: {},
       type: '',
+      childrenBooks: {}, // stores detailed info for children books
     };
   },
   computed: {
@@ -45,14 +46,46 @@ export default {
           return 'Все книги';
       }
     },
+    displayBooks() {
+      if (this.type === 'children' && this.books.book_ids) {
+        return this.books.book_ids.map(id => this.childrenBooks[id] || { _id: id });
+      }
+      return this.books;
+    }
+  },
+  methods: {
+    getBookImage(book) {
+      if (this.type === 'children' && this.childrenBooks[book._id]) {
+        return this.childrenBooks[book._id].image;
+      }
+      return book.image;
+    },
+    async fetchChildrenBookDetails(bookId) {
+      try {
+        const response = await fetch(`http://localhost:8001/api/books/books/${bookId}`);
+        const bookData = await response.json();
+        this.childrenBooks[bookId] = bookData; // Store the book details by ID
+      } catch (error) {
+        console.error('Ошибка при загрузке детской книги:', error);
+      }
+    }
   },
   async created() {
-    this.type = this.$route.query.type || 'popular'; // По умолчанию показываем популярные книги
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8001/api/books/books/${this.type}?skip=0&limit=100`
-      );
-      this.books = await response.json();
+      this.type = this.$route.query.type || '';
+      if (this.type === 'children') {
+        const response = await fetch('http://localhost:8001/api/children_and_perents/children_and_perents/');
+        this.books = await response.json();
+      } else {
+        const response = await fetch(`http://localhost:8001/api/books/books/${this.type}`);
+        this.books = await response.json();
+      }
+
+      if (this.type === 'children' && this.books.book_ids) {
+        await Promise.all(
+          this.books.book_ids.map(bookId => this.fetchChildrenBookDetails(bookId))
+        );
+      }
     } catch (error) {
       console.error('Ошибка при загрузке книг:', error);
     }
@@ -64,7 +97,7 @@ export default {
 .all-books-container {
   padding: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 100px auto 0;
 }
 
 h1 {

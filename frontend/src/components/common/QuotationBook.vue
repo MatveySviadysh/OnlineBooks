@@ -13,15 +13,18 @@
   export default {
     data() {
       return {
-        searchQuery: '', // Добавленная переменная для хранения поискового запроса
-        quotes: [
-          { id: 1, text: 'Всё, что мы есть — это результат того, что мы думали.', author: 'Будда' },
-          { id: 2, text: 'Сложности — это просто возможность начать заново, более мудро.', author: 'Генри Форд' },
-          { id: 3, text: 'Мы не можем изменить прошлое, но мы можем изменить будущее.', author: 'Дейл Карнеги' },
-          // Добавьте больше цитат здесь
-        ],
+        searchQuery: '',
+        quotes: []
       };
     },
+    async created() {
+      try {
+        const response = await fetch('http://localhost:8000/v1/quotes/all');
+        this.quotes = await response.json();
+      } catch (error) {
+        console.error('Error fetching quotes:', error);
+      }
+    }
   };
   </script>
   
@@ -47,4 +50,3 @@
     background-color: #f9f9f9;
   }
   </style>
-  

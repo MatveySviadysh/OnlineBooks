@@ -20,7 +20,7 @@
     <CookieConsent />
     <RecomendBooks />
     <MobileApp />
-    
+    <AuthorsBlock />
     <InfoService />
   </div>
 </template>
@@ -39,7 +39,7 @@ import MobileApp from '../help/MobileApp.vue';
 import InfoService from '../help/InfoService.vue';
 import HederHome from '../help/HederHome.vue';
 import RecomendBooks from '../help/RecomendBooks.vue';
-
+import AuthorsBlock from '../help/AuthorsBlock.vue';
 
 export default defineComponent({
   name: 'HomePage',
@@ -56,6 +56,7 @@ export default defineComponent({
     InfoService,
     HederHome,
     RecomendBooks,
+    AuthorsBlock,
   },
   setup() {
     const center = ref<[number, number]>([51.505, -0.09]);

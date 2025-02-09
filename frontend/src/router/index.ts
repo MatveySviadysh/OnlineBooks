@@ -118,7 +118,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/book/read',
     name: 'AllReadBooks',
     component: AllReadBooks 
-  }
+  },
 ]
 
 

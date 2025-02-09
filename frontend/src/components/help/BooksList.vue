@@ -124,7 +124,8 @@
           </router-link>
         </div>
       </div>  
-    </div>  </div>
+    </div>  
+  </div>
 </template>
 
 <script>
@@ -139,18 +140,28 @@ export default {
     return {
       popularBooks: [],
       recentBooks: [],
+      childrenBooks: [],
       viewMode: 'grid'
     }
   },
   async created() {
     try {
-      const [popularResponse, recentResponse] = await Promise.all([
+      const [popularResponse, recentResponse, childrenResponse] = await Promise.all([
         fetch('http://127.0.0.1:8001/api/books/books/popular?skip=0&limit=12'),
-        fetch('http://127.0.0.1:8001/api/books/books/recent?skip=0&limit=12')
+        fetch('http://127.0.0.1:8001/api/books/books/recent?skip=0&limit=12'),
+        fetch('http://localhost:8001/api/children_and_perents/children_and_perents/')
       ]);
 
       this.popularBooks = await popularResponse.json();
       this.recentBooks = await recentResponse.json();
+      
+      const childrenData = await childrenResponse.json();
+      this.childrenBooks = await Promise.all(
+        childrenData.book_ids.map(async (bookId) => {
+          const bookResponse = await fetch(`http://localhost:8001/api/books/books/${bookId}`);
+          return bookResponse.json();
+        })
+      );
     } catch (error) {
       console.error('Ошибка при загрузке книг:', error);
     }

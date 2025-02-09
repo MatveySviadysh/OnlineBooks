@@ -1,12 +1,13 @@
 <template>
     <div class="a-row">
-        <a class="btn">Books</a>
+        <a class="btn" href="/all_books">Books</a>
         <a class="btn">Audiobooks</a>
         <a class="btn" href="https://t.me/Obook2007_bot?start=some_parameter">Our Bot</a>
-        <a class="btn">Authors</a>
-        <a class="btn">Quotes</a>
-        <a class="btn">Top Books</a>
-        <a class="btn">New Books</a>
+        <a class="btn" href="/authors">Authors</a>
+        <a class="btn" href="/quotes/quotes_book">Quotes</a>
+        
+        <a class="btn" href="/all_books?type=popular">Top Books</a>        
+        <a class="btn" href="/all_books?type=recent">New Books</a>
     </div>
 </template>
 
@@ -18,6 +19,7 @@ export default {
 
 <style scoped>
 .a-row {
+    
     width: 1150px;
     height: 50px;
     margin-top: 100px;
@@ -27,6 +29,7 @@ export default {
 }
 
 .btn {
+    text-decoration: none;
     text-align: center;
     padding: 8px 16px;
     border-radius: 15px;

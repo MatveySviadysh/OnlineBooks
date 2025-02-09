@@ -21,26 +21,41 @@
     </div>
 
     <!-- Контент после загрузки -->
-    <div v-else>
-      <h1>Детали книги: {{ book.title }}</h1>
-      <p><strong>Автор:</strong> {{ book.author }}</p>
-      <p><strong>Жанр:</strong> {{ book.genre }}</p>
-      <p><strong>Дата публикации:</strong> {{ book.publication_date }}</p>
-      <p><strong>Язык:</strong> {{ book.language }}</p>
-      <p><strong>Количество страниц:</strong> {{ book.page_count }}</p>
-      <p><strong>Рейтинг:</strong> {{ book.rating }}</p>
-      <p><strong>Ссылка на файл:</strong> {{ book.file_url }}</p>
-      <p><strong>ID книги:</strong> {{ id }}</p>
+    <div v-else class="book-reader">
+      <div class="content-container">
+        <h1>Детали книги: {{ book.title }}</h1>
+        <p><strong>Автор:</strong> {{ book.author }}</p>
 
-      <!-- Блок с содержимым книги -->
-      <div v-if="content">
-        <h2>Содержимое книги:</h2>
-        <pre>{{ content }}</pre>
-      </div>
+        <!-- Блок с содержимым книги -->
+        <div v-if="content">
+          <pre>{{ currentPageContent }}</pre>
+          
+          <!-- Пагинация -->
+          <div class="pagination">
+            <button 
+              :disabled="currentPage === 1" 
+              @click="currentPage--"
+              class="pagination-btn"
+            >
+              Предыдущая
+            </button>
+            <span class="page-info">
+              Страница {{ currentPage }} из {{ totalPages }}
+            </span>
+            <button 
+              :disabled="currentPage === totalPages" 
+              @click="currentPage++"
+              class="pagination-btn"
+            >
+              Следующая
+            </button>
+          </div>
+        </div>
 
-      <!-- Сообщение об ошибке -->
-      <div v-if="errorMessage" class="error-message">
-        {{ errorMessage }}
+        <!-- Сообщение об ошибке -->
+        <div v-if="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
       </div>
     </div>
   </div>
@@ -58,18 +73,31 @@ export default {
     return {
       book: {},
       content: '',
-      isLoading: true, // Флаг загрузки
-      errorMessage: '' // Сообщение об ошибке
+      isLoading: true,
+      errorMessage: '',
+      currentPage: 1,
+      linesPerPage: 50
+    }
+  },
+  computed: {
+    contentLines() {
+      return this.content.split('\n');
+    },
+    totalPages() {
+      return Math.ceil(this.contentLines.length / this.linesPerPage);
+    },
+    currentPageContent() {
+      const start = (this.currentPage - 1) * this.linesPerPage;
+      const end = start + this.linesPerPage;
+      return this.contentLines.slice(start, end).join('\n');
     }
   },
   async created() {
     try {
-      // Загрузка основной информации о книге
       const bookResponse = await fetch(`http://127.0.0.1:8001/api/books/books/${this.id}`);
       if (!bookResponse.ok) throw new Error('Ошибка загрузки данных книги');
       this.book = await bookResponse.json();
 
-      // Загрузка содержимого книги
       await this.getBookContent();
 
     } catch (error) {
@@ -93,7 +121,49 @@ export default {
 </script>
 
 <style scoped>
-/* Обновленные стили анимации */
+.book-reader {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-container {
+  width: 1200px;
+  text-align: center;
+}
+
+.pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #34495e;
+}
+
+.page-info {
+  font-size: 1.1em;
+  color: #2c3e50;
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -263,7 +333,6 @@ export default {
   text-transform: uppercase;
 }
 
-/* Остальные стили */
 h1 {
   font-size: 2em;
   margin-bottom: 1rem;
@@ -284,6 +353,7 @@ pre {
   font-family: monospace;
   white-space: pre-wrap;
   word-wrap: break-word;
+  text-align: left;
 }
 
 .error-message {
