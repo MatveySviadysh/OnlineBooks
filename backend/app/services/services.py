@@ -4,20 +4,40 @@ from db.models.user import User
 from schemas.schemas import UserCreate, UserLogin, UserResponse
 from fastapi import HTTPException, Depends, status, Response, Request
 from typing import Optional
+import uuid
+import datetime
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_user(user: UserCreate):
     if db.users.find_one({"email": user.email}):
         raise HTTPException(status_code=400, detail="Email уже зарегистрирован")
+
     hashed_password = pwd_context.hash(user.password)
-    user_data = {"email": user.email, "hashed_password": hashed_password}
-    result = db.users.insert_one(user_data)
-    return {
-        "email": user.email,
-        "message": "Пользователь успешно зарегистрирован"
+
+    recommendation_data = {
+        "name": user.email,
+        "created_at": datetime.datetime.utcnow(),
+        "updated_at": datetime.datetime.utcnow()
     }
 
+    new_recommendation = db.recommendations.insert_one(recommendation_data)
+    recommendation_id = str(new_recommendation.inserted_id)
+
+    user_data = {
+        "email": user.email,
+        "hashed_password": hashed_password,
+        "recommendation_id": recommendation_id
+    }
+
+    db.users.insert_one(user_data)
+
+    return {
+        "email": user.email,
+        "recommendation_id": recommendation_id,
+        "message": "Пользователь успешно зарегистрирован"
+    }
+    
 def authenticate_user(user: UserLogin, response: Response):
     user_data = db.users.find_one({"email": user.email})
     if not user_data:

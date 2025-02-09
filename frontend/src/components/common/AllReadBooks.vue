@@ -124,108 +124,205 @@
   </script>
   
   <style scoped>
-  .image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  .allbooksread-img{
-    height: 480px;
-  }
-
   .all-books-container {
-    margin-top: 100px;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 100px auto 0;
+      max-width: 1200px;
+      margin: 100px auto 40px;
+      padding: 0 20px;
   }
   
-  h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #333;
+  .header-info {
+      margin-bottom: 40px;
+  }
+  
+  .breadcrumbs {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 15px;
+  }
+  
+  .breadcrumbs a {
+      color: #2c3e50;
+      text-decoration: none;
+      transition: color 0.3s;
+  }
+  
+  .breadcrumbs a:hover {
+      color: #42b983;
+  }
+  
+  .header-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+  }
+  
+  .stats-container {
+      display: flex;
+      gap: 25px;
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+  }
+  
+  .image-container {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      margin-bottom: 40px;
+  }
+  
+  .allbooksread-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
   }
   
   .books-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
   }
   
   .book-card {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      border: 1px solid #eee;
   }
   
   .book-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
   }
   
   .book-card a {
-    text-decoration: none;
-    color: inherit;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
   }
   
   .book-image {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-bottom: 1px solid #f5f5f5;
   }
   
   .book-details {
-    padding: 1rem;
-    text-align: center;
+      padding: 18px;
+      background: white;
   }
   
   .book-title {
-    font-size: 1.1rem;
-    margin: 0.5rem 0;
-    color: #333;
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin: 0 0 8px;
+      color: #2c3e50;
+      line-height: 1.3;
+      height: 3.2em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
   }
   
   .book-author {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 12px;
+      height: 1.5em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
   }
   
   .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 40px 0;
   }
   
   .pagination-button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+      padding: 10px 25px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      color: #2c3e50;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
   }
   
   .pagination-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+      opacity: 0.6;
+      cursor: not-allowed;
   }
   
   .pagination-button:hover:not(:disabled) {
-    background-color: #0056b3;
+      background: #42b983;
+      border-color: #42b983;
+      color: white;
+      transform: translateY(-1px);
   }
   
   .pagination-info {
-    font-size: 1rem;
-    color: #333;
+      font-size: 0.95rem;
+      color: #666;
+      margin: 0 15px;
+  }
+  
+  @media (max-width: 768px) {
+      .all-books-container {
+          margin-top: 80px;
+          padding: 0 15px;
+      }
+      
+      .header-title {
+          font-size: 2rem;
+      }
+      
+      .allbooksread-img {
+          height: 250px;
+      }
+      
+      .books-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+      }
+      
+      .book-image {
+          height: 240px;
+      }
+  }
+  
+  @media (max-width: 480px) {
+      .books-grid {
+          grid-template-columns: 1fr;
+      }
+      
+      .stats-container {
+          flex-direction: column;
+          gap: 8px;
+      }
+      
+      .pagination {
+          gap: 10px;
+      }
+      
+      .pagination-button {
+          padding: 8px 15px;
+          font-size: 0.9rem;
+      }
   }
   </style>
