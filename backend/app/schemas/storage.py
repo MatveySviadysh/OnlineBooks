@@ -22,6 +22,7 @@ class StorageUpdate(BaseModel):
 class StorageResponse(StorageBase):
     """Model for client response"""
     id: str = Field(..., alias="_id") 
+    user_id: int 
     created_at: datetime
     updated_at: datetime
 

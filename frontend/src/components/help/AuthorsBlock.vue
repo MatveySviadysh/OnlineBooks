@@ -94,7 +94,7 @@ export default {
 }
 
 .description {
-  font-size: 18px;
+  font-size: 13px;
   color: #666;
   margin-bottom: 20px;
   line-height: 1.6;
@@ -107,7 +107,7 @@ export default {
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
-  font-size: 18px;
+  font-size: 14px;
   text-transform: uppercase;
   border: 1px solid transparent;
   width: 200px; /* initial width */
@@ -133,7 +133,7 @@ export default {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  font-size: 18px;
+  font-size: 13px;
   font-style: italic;
   color: #666;
 }

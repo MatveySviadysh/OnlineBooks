@@ -30,12 +30,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Модальное окно с сообщением об успешном добавлении -->
+    <div v-if="showSuccessPopup" class="success-popup">
+      <div class="popup-overlay" @click="closeSuccessPopup"></div>
+      <div class="popup-content">
+        <p>Книга успешно добавлена в хранилище!</p>
+        <button @click="closeSuccessPopup">Закрыть</button>
+      </div>
+    </div>
   </div>
 </template>
 
-
 <script>
 import axios from 'axios';
+
 export default {
   props: {
     id: {
@@ -50,9 +59,9 @@ export default {
   data() {
     return {
       book: {},
-      content: '',
       likes: 0,
-      dislikes: 0
+      dislikes: 0,
+      showSuccessPopup: false // Управление отображением попапа
     };
   },
   async created() {
@@ -68,52 +77,42 @@ export default {
   },
   methods: {
     async addToStorage() {
-    const response = await axios.get('http://localhost:8001/api/users/me', {
-      withCredentials: true
-    });
+      try {
+        const response = await axios.get('http://localhost:8001/api/users/me', { withCredentials: true });
+        const userEmail = response.data.email;
+        console.log('User Email:', userEmail);
 
-    const userEmail = response.data.email; // Получаем email пользователя
+        const storageResponse = await axios.get(`http://localhost:8001/api/storage/storage/storage-id-by-email/${userEmail}`);
+        if (storageResponse.status !== 200 || !storageResponse.data) {
+          throw new Error(`Storage not found for user: ${userEmail}`);
+        }
 
-    // Получаем данные хранилища по email пользователя
-    const storageResponse = await axios.get(`http://localhost:8001/api/storage/storage/?name=${userEmail}`);
-    if (storageResponse.status !== 200 || !Array.isArray(storageResponse.data) || storageResponse.data.length === 0) {
-      throw new Error(`Ошибка получения хранилища или хранилище не найдено для пользователя ${userEmail}`);
-    }
+        const storageId = storageResponse.data;
+        console.log('Storage ID:', storageId);
 
-    // Извлекаем _id первого хранилища из массива
-    const storageId = storageResponse.data[0]._id;
+        const addBookResponse = await axios.post(
+          `http://localhost:8001/api/storage/storage/${storageId}/add-book/${this.book._id}`,
+          {},
+          { withCredentials: true }
+        );
 
-    // Добавляем книгу в хранилище
-    const addBookResponse = await axios.post(
-      `http://localhost:8001/api/storage/storage/${storageId}/add-book/${this.book._id}`,
-    );
+        if (addBookResponse.status === 200) {
+          console.log('Book successfully added to storage');
+          this.showSuccessPopup = true; // Показываем попап при успешном добавлении
+        } else {
+          throw new Error('Failed to add book to storage');
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    },
 
-    
-
-},
-
-
-
-
-
+    closeSuccessPopup() {
+      this.showSuccessPopup = false; // Закрываем попап
+    },
 
     goToBookReader() {
       this.$router.push({ name: 'BookReader', params: { id: this.id } });
-    },
-
-    async getBookContent() {
-      try {
-        const response = await fetch(`http://127.0.0.1:8001/api/books/books/content/${this.id}`, {
-          method: 'GET',
-          headers: { 'accept': 'application/json' }
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP статус: ${response.status}`);
-        }
-        this.content = await response.json();
-      } catch (error) {
-        console.error('Ошибка при загрузке содержимого книги:', error);
-      }
     },
 
     likeBook() {
@@ -130,6 +129,64 @@ export default {
 </script>
 
 <style scoped>
+/* Стили для модального окна */
+.success-popup {
+  background-color: #fffdf8;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 1s forwards, fadeOut 1s 2s forwards;
+  text-align: center;
+  font-size: 16px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.popup-content {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+
 .book-container {
   width: 1200px;
   margin: 0 auto;

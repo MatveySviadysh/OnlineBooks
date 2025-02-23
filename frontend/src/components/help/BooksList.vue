@@ -127,6 +127,7 @@
     </div>  
   </div>
 </template>
+
 <script>
 import StarRating from '@/components/help/StarRating.vue'
 
@@ -157,10 +158,11 @@ export default {
 
   async created() {
     try {
-      const [popularResponse, recentResponse, childrenResponse] = await Promise.all([
+      const [popularResponse, recentResponse, childrenResponse, audioResponse] = await Promise.all([
         fetch('http://127.0.0.1:8001/api/books/books/popular?skip=0&limit=12'),
         fetch('http://127.0.0.1:8001/api/books/books/recent?skip=0&limit=12'),
-        fetch('http://localhost:8001/api/children_and_perents/children_and_perents/')
+        fetch('http://localhost:8001/api/children_and_perents/children_and_perents/'),
+        fetch('http://127.0.0.1:8001/api/book/book/popular-with-audio?skip=0&limit=12') // Audiobooks API
       ]);
 
       this.popularBooks = await popularResponse.json();
@@ -174,8 +176,8 @@ export default {
         })
       );
 
-      // Create audioBooks from popularBooks by filtering books that have an audio_file_path
-      this.audioBooks = this.popularBooks.filter(book => book.audio_file_path && book.audio_file_path.trim() !== '');
+      // Set the audiobooks directly from the response
+      this.audioBooks = await audioResponse.json();
 
     } catch (error) {
       console.error('Ошибка при загрузке книг:', error);
@@ -184,128 +186,127 @@ export default {
 }
 </script>
 
+  <style scoped>
+  .book-image{
+    width: 123px;
+    height: 176px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
 
-<style scoped>
-.book-image{
-  width: 123px;
-  height: 176px;
-  object-fit: cover;
-  border-radius: 5px;
-}
+  .books-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 1200px; /* Фиксированная ширина контейнера */
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 100px; /* Центрирование контейнера */
+  }
 
-.books-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 1200px; /* Фиксированная ширина контейнера */
-  margin: 0 auto;
-  margin-top: 100px;
-  margin-bottom: 100px; /* Центрирование контейнера */
-}
+  .books-row {
+    width: 100%;
+    height: 393px; /* Фиксированная высота блока */
+    background-color: #f9f9f9; /* Фон блока */
+    border-radius: 10px; /* Скругление углов */
+    padding: 1rem; /* Внутренние отступы */
+    overflow: hidden; /* Скрываем содержимое, выходящее за пределы блока */
+  }
 
-.books-row {
-  width: 100%;
-  height: 393px; /* Фиксированная высота блока */
-  background-color: #f9f9f9; /* Фон блока */
-  border-radius: 10px; /* Скругление углов */
-  padding: 1rem; /* Внутренние отступы */
-  overflow: hidden; /* Скрываем содержимое, выходящее за пределы блока */
-}
+  .header-row {
+    height: 73px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Выравниваем элементы по вертикали */
+  }
 
-.header-row {
-  height: 73px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Выравниваем элементы по вертикали */
-}
+  .title-container {
+    display: flex;
+    flex-direction: column; /* Размещаем заголовок и подзаголовок вертикально */
+    gap: 4px; /* Расстояние между заголовком и подзаголовком */
+  }
 
-.title-container {
-  display: flex;
-  flex-direction: column; /* Размещаем заголовок и подзаголовок вертикально */
-  gap: 4px; /* Расстояние между заголовком и подзаголовком */
-}
+  .title-header-row {
+    font-size: 20px; /* Размер шрифта для заголовка */
+    font-weight: bold; /* Жирный шрифт для заголовка */
+  }
 
-.title-header-row {
-  font-size: 20px; /* Размер шрифта для заголовка */
-  font-weight: bold; /* Жирный шрифт для заголовка */
-}
+  .title-header-row-mini {
+    font-size: 14px; /* Размер шрифта для подзаголовка */
+    color: #666; /* Цвет подзаголовка */
+  }
 
-.title-header-row-mini {
-  font-size: 14px; /* Размер шрифта для подзаголовка */
-  color: #666; /* Цвет подзаголовка */
-}
+  .more-button {
+    font-size: 16px;
+    color: #000000; /* Цвет кнопки "more" */
+    font-weight: 500;
+    text-decoration: none; /* Убираем подчеркивание */
+  }
 
-.more-button {
-  font-size: 16px;
-  color: #000000; /* Цвет кнопки "more" */
-  font-weight: 500;
-  text-decoration: none; /* Убираем подчеркивание */
-}
+  .books-list {
+    display: flex;
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    gap: 1rem;
+    padding: 1rem;
+    height: calc(100% - 60px); /* Высота списка книг (высота блока минус высота заголовка) */
+  }
 
-.books-list {
-  display: flex;
-  overflow-x: auto; /* Горизонтальная прокрутка */
-  gap: 1rem;
-  padding: 1rem;
-  height: calc(100% - 60px); /* Высота списка книг (высота блока минус высота заголовка) */
-}
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 140px;
+    height: 260px; /* Высота карточки книги */
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для карточек */
+  }
 
-.book-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  flex: 0 0 140px;
-  height: 260px; /* Высота карточки книги */
-  border-radius: 10px;
-  background-color: #fff;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для карточек */
-}
+  .book-details-author-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-.book-details-author-title {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+  .book-details-title {
+    font-size: 16px; /* Размер шрифта для названия книги */
+    font-weight: bold; /* Жирный шрифт */
+  }
 
-.book-details-title {
-  font-size: 16px; /* Размер шрифта для названия книги */
-  font-weight: bold; /* Жирный шрифт */
-}
+  .book-details-author {
+    font-size: 14px; /* Размер шрифта для автора */
+    color: #666;
+  }
 
-.book-details-author {
-  font-size: 14px; /* Размер шрифта для автора */
-  color: #666;
-}
+  .details-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none; /* Убираем подчеркивание */
+  }
 
-.details-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none; /* Убираем подчеркивание */
-}
+  .details-button:hover .book-image {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
 
-.details-button:hover .book-image {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
+  .grid .book-card {
+    flex: 0 0 160px; /* Увеличиваем размер карточки в grid */
+  }
 
-.grid .book-card {
-  flex: 0 0 160px; /* Увеличиваем размер карточки в grid */
-}
+  .list .book-card {
+    flex: 0 0 100%; /* Карточки в list будут занимать всю ширину */
+  }
 
-.list .book-card {
-  flex: 0 0 100%; /* Карточки в list будут занимать всю ширину */
-}
+  .grid .books-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
 
-.grid .books-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
-}
-
-.list .books-list {
-  display: block;
-}
-</style>
+  .list .books-list {
+    display: block;
+  }
+  </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="a-row">
         <a class="btn" href="/all_books">Books</a>
-        <a class="btn">Audiobooks</a>
+        <a class="btn" href="/news/news_feed">Post Feed</a>
         <a class="btn" href="https://t.me/Obook2007_bot?start=some_parameter">Our Bot</a>
         <a class="btn" href="/authors">Authors</a>
         <a class="btn" href="/quotes/quotes_book">Quotes</a>

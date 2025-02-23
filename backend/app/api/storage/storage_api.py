@@ -9,6 +9,10 @@ from schemas.storage import (
 )
 from datetime import datetime
 from bson import ObjectId
+from urllib.parse import unquote
+import logging
+
+
 
 router = APIRouter(
     prefix="/storage",
@@ -36,14 +40,25 @@ async def read_storages(name: Optional[str] = Query(None), db=Depends(get_databa
     query = {"name": name} if name else {}
     storages_cursor = db.storage.find(query)
     storages = []
+    
     async for storage in storages_cursor:
         storage["_id"] = str(storage["_id"])  # Convert ObjectId to string
+        
+        # Handle case where 'user_id' is missing or needs to be fetched.
         if 'user_id' not in storage:
-            # Assuming user_id should be available, handle the case where it's missing.
-            storage['user_id'] = "default_user_id"  # Or fetch it accordingly
-        storages.append(StorageResponse(**storage))
-    return storages
+            # Set a default integer value for user_id or fetch from another source
+            storage['user_id'] = 0  # Assuming 0 as default for now, change if necessary
 
+        try:
+            # Ensure 'user_id' is valid and is an integer
+            storage['user_id'] = int(storage['user_id'])  # Convert to integer if it's a string
+        except ValueError:
+            logging.error(f"Invalid user_id value: {storage['user_id']} for storage {_id}")
+            storage['user_id'] = 0  # Default to 0 in case of error
+
+        storages.append(StorageResponse(**storage))
+    
+    return storages
 
 @router.post("/{storage_id}/add-item/{item_id}", response_model=StorageResponse)
 async def add_item_to_storage(storage_id: str, item_id: str, db=Depends(get_database)):
@@ -81,16 +96,16 @@ async def add_book_to_storage(storage_id: str, book_id: str, db=Depends(get_data
         storage_oid = ObjectId(storage_id)
         book_oid = ObjectId(book_id)
 
-        # Получаем хранилище по ID
+        # Проверяем, существует ли хранилище
         storage = await db.storage.find_one({"_id": storage_oid})
         if not storage:
             raise HTTPException(status_code=404, detail="Storage not found")
-        
-        # Получаем книгу по ID
+
+        # Проверяем, существует ли книга
         book = await db.books.find_one({"_id": book_oid})
         if not book:
             raise HTTPException(status_code=404, detail="Book not found")
-        
+
         # Если в хранилище нет массива book_ids, создаем его
         if "book_ids" not in storage:
             storage["book_ids"] = []
@@ -113,6 +128,7 @@ async def add_book_to_storage(storage_id: str, book_id: str, db=Depends(get_data
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Ошибка: {str(e)}")
 
+
 @router.get("/books-by-email/{email}", response_model=List[str])
 async def get_books_by_email(email: str, db=Depends(get_database)):
     try:
@@ -122,5 +138,21 @@ async def get_books_by_email(email: str, db=Depends(get_database)):
         
         book_ids = storage.get("book_ids", [])
         return book_ids
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/storage-id-by-email/{email}", response_model=str)
+async def get_storage_id_by_email(email: str, db=Depends(get_database)):
+    try:
+        # Ищем хранилище по почте
+        storage = await db.storage.find_one({"name": email})
+        
+        # Если хранилище не найдено, выбрасываем исключение
+        if not storage:
+            raise HTTPException(status_code=404, detail="Storage not found for this email")
+        
+        # Возвращаем ID хранилища
+        return str(storage["_id"])
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

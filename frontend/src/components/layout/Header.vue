@@ -70,15 +70,6 @@
             <i class="fas fa-bars"></i>
             <span>Menu</span>
           </div>
-          <div class="search-wrapper">
-            <input 
-              type="text" 
-              class="search-input" 
-              placeholder="Search" 
-              @focus="isSearchFocused = true"
-              @blur="isSearchFocused = false"
-            >
-          </div>
         </div>
 
         <div class="logo" :class="{ 'hide': isSearchFocused }">

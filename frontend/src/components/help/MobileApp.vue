@@ -2,7 +2,7 @@
   <div class="app-info-container">
     <div class="app-info-text">
       <h2>Read and Listen</h2>
-      <p>Your favorite books at home and on the go, even without the internet</p>
+      <p class="description">Your favorite books at home and on the go, even without the internet</p>
       <button class="download-btn">Download the App</button>
     </div>
     <div class="app-image">
@@ -30,7 +30,7 @@ export default {
 
 .app-info-text {
   text-align: center; /* Центрируем текст */
-  margin-bottom: 40px; /* Увеличиваем отступ между текстом и картинкой */
+  margin-bottom: 40px;
 }
 
 .app-info-text h2 {

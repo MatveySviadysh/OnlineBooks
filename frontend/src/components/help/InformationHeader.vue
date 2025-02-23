@@ -6,11 +6,11 @@
         </div>
         <div class="info-item">
             <i class="fas fa-headphones"></i>
-            <p>2000+ audiobooks</p>
+            <p>{{ audiobookCount }} audiobooks</p>
         </div>
         <div class="info-item">
             <i class="fas fa-star"></i>
-            <p>200+ new items every month</p>
+            <p>{{ newBooksLastMonth }} new items this month</p>
         </div>
         <div class="info-item">
             <i class="fas fa-wifi"></i>
@@ -19,31 +19,46 @@
     </div>
 </template>
 
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
 interface AppInfoData {
     bookCount: number;
+    audiobookCount: number;
+    newBooksLastMonth: number;
 }
 
 export default defineComponent({
     name: 'AppInfo',
     data(): AppInfoData {
         return {
-            bookCount: 0
+            bookCount: 0,
+            audiobookCount: 0,
+            newBooksLastMonth: 0, // Add this new property
         };
     },
     async created() {
         try {
-            const response = await axios.get('http://localhost:8001/api/books/books/count');
-            this.bookCount = response.data;
+            // Fetch the total number of books
+            const bookResponse = await axios.get('http://127.0.0.1:8001/api/books/books/count');
+            this.bookCount = bookResponse.data;
+
+            // Fetch the number of audiobooks
+            const audiobookResponse = await axios.get('http://127.0.0.1:8001/api/book/book/count-with-audio');
+            this.audiobookCount = audiobookResponse.data;
+
+            // Fetch the number of books added in the last month
+            const lastMonthBooksResponse = await axios.get('http://127.0.0.1:8001/api/book/book/count-last-month');
+            this.newBooksLastMonth = lastMonthBooksResponse.data;
         } catch (error) {
-            console.error('Error fetching book count:', error);
+            console.error('Error fetching counts:', error);
         }
     }
 });
 </script>
+
 
 <style scoped>
 .info-header {
