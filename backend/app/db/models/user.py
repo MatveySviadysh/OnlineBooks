@@ -7,6 +7,7 @@ class User(BaseModel):
     email: str
     password: str
     recommendation_id: Optional[str] = None  # ID рекомендации
+    storage_id: Optional[str] = None 
 
     class Config:
         orm_mode = True

@@ -1,87 +1,91 @@
 <template>
-    <div class="app-info-container">
-      <div class="app-info-content">
-        <!-- Left Section: App Description -->
-        <div class="app-description">
-          <h2>О нашем приложении</h2>
-          <p>Наше приложение — это удобный и быстрый способ управления вашими задачами. Мы создали его, чтобы вы могли легко планировать, отслеживать и завершать важные дела прямо со своего мобильного устройства.</p>
-          <p>Скачайте наше приложение и начните улучшать свой рабочий процесс сегодня!</p>
-          <button class="download-button">Скачать приложение</button>
-        </div>
-  
-        <!-- Right Section: Phone Image with App Screenshot -->
-        <div class="app-image">
-          <img src="https://via.placeholder.com/250x500.png?text=App+Screenshot" alt="App Screenshot on Phone" class="phone-image" />
-        </div>
-      </div>
+  <div class="app-info-container">
+    <div class="app-info-text">
+      <h2>Read and Listen</h2>
+      <p>Your favorite books at home and on the go, even without the internet</p>
+      <button class="download-btn">Download the App</button>
     </div>
-  </template>
-  
-  <script lang="ts">
-  export default {
-    name: 'AppInfo'
+    <div class="app-image">
+      <img class="app-photo" src="@/assets/Мобилка.png" alt="Main Image" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+export default {
+  name: 'AppInfo'
+}
+</script>
+
+<style scoped>
+.app-info-container {
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  position: relative;
+}
+
+.app-info-text {
+  text-align: center; /* Центрируем текст */
+  margin-bottom: 40px; /* Увеличиваем отступ между текстом и картинкой */
+}
+
+.app-info-text h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.app-info-text p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.download-btn {
+  padding: 12px 25px;
+  background-color: transparent;
+  color: black;
+  font-size: 16px;
+  border: 2px solid black; /* Черная рамка */
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Плавное изменение при наведении */
+  font-weight: 600;
+}
+
+.download-btn:hover {
+  background-color: black; /* При наведении кнопка становится черной */
+  color: white; /* Текст становится белым */
+}
+
+.app-image {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px; /* Добавляем отступ сверху, чтобы изображение было ниже */
+}
+
+.app-photo {
+  width: 700px; /* Увеличиваем размер изображения */
+  height: auto;
+  animation: bounce 1.5s ease-in-out infinite; /* Анимация прыжка */
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
-  </script>
-  
-  <style scoped>
-  .app-info-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f7f7f7;
-    padding: 40px;
+  50% {
+    transform: translateY(-10px);
   }
-  
-  .app-info-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    width: 100%;
-  }
-  
-  .app-description {
-    flex: 1;
-    padding-right: 30px;
-  }
-  
-  .app-description h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .app-description p {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 15px;
-  }
-  
-  .download-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .download-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .app-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .phone-image {
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  </style>
-  
+}
+</style>

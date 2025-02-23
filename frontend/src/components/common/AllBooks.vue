@@ -47,20 +47,24 @@ export default {
       }
     },
     displayBooks() {
+      // For children books, we map over the book ids and fetch their details
       if (this.type === 'children' && this.books.book_ids) {
         return this.books.book_ids.map(id => this.childrenBooks[id] || { _id: id });
       }
-      return this.books;
+      // For other book types, just return the main books object
+      return this.books.book_ids || this.books;
     }
   },
   methods: {
     getBookImage(book) {
+      // Get the book image depending on whether it's a children book or not
       if (this.type === 'children' && this.childrenBooks[book._id]) {
         return this.childrenBooks[book._id].image;
       }
       return book.image;
     },
     async fetchChildrenBookDetails(bookId) {
+      // Fetch and store detailed info for children's books
       try {
         const response = await fetch(`http://localhost:8001/api/books/books/${bookId}`);
         const bookData = await response.json();
@@ -68,30 +72,37 @@ export default {
       } catch (error) {
         console.error('Ошибка при загрузке детской книги:', error);
       }
+    },
+    async loadBooks() {
+      // Fetch books based on the type (popular, recent, etc.)
+      try {
+        if (this.type === 'children') {
+          const response = await fetch('http://localhost:8001/api/children_and_perents/children_and_perents/');
+          this.books = await response.json();
+        } else {
+          const response = await fetch(`http://localhost:8001/api/books/books/${this.type}`);
+          this.books = await response.json();
+        }
+
+        // For children books, we fetch the details for each book in the book_ids array
+        if (this.type === 'children' && this.books.book_ids) {
+          await Promise.all(
+            this.books.book_ids.map(bookId => this.fetchChildrenBookDetails(bookId))
+          );
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке книг:', error);
+      }
     }
   },
   async created() {
-    try {
-      this.type = this.$route.query.type || '';
-      if (this.type === 'children') {
-        const response = await fetch('http://localhost:8001/api/children_and_perents/children_and_perents/');
-        this.books = await response.json();
-      } else {
-        const response = await fetch(`http://localhost:8001/api/books/books/${this.type}`);
-        this.books = await response.json();
-      }
-
-      if (this.type === 'children' && this.books.book_ids) {
-        await Promise.all(
-          this.books.book_ids.map(bookId => this.fetchChildrenBookDetails(bookId))
-        );
-      }
-    } catch (error) {
-      console.error('Ошибка при загрузке книг:', error);
-    }
-  },
+    // On component creation, fetch books based on the 'type' query parameter
+    this.type = this.$route.query.type || '';
+    await this.loadBooks();
+  }
 };
 </script>
+
 
 <style scoped>
 .all-books-container {

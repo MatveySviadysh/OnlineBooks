@@ -9,13 +9,13 @@ from datetime import datetime, timedelta
 import aiofiles
 import os 
 import aiohttp
-
+from fastapi import HTTPException
 
 class CRUDBook:
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
         self.collection = db.books
-
+        
     async def get_file_content(self, file_url: str) -> str:
         """Получение содержимого файла по URL"""
         async with aiohttp.ClientSession() as session:

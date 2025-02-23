@@ -78,7 +78,7 @@
       </div>
 
       <div :class="['books-list', viewMode]">
-        <div v-for="book in audioBooks" :key="book._id" :class="['book-card', viewMode]">
+        <div v-for="book in filteredAudioBooks" :key="book._id" :class="['book-card', viewMode]">
           <router-link 
             :to="{ name: 'BookDetail', params: { id: book._id } }" 
             class="details-button"
@@ -127,7 +127,6 @@
     </div>  
   </div>
 </template>
-
 <script>
 import StarRating from '@/components/help/StarRating.vue'
 
@@ -141,9 +140,21 @@ export default {
       popularBooks: [],
       recentBooks: [],
       childrenBooks: [],
+      audioBooks: [], // Initialize as an empty array
       viewMode: 'grid'
     }
   },
+
+  computed: {
+    filteredAudioBooks() {
+      // Ensure audioBooks is an array before applying filter
+      if (Array.isArray(this.audioBooks)) {
+        return this.audioBooks.filter(book => book.audio_file_path && book.audio_file_path.trim() !== ''  && book.audio_file_path.trim() !== "string");
+      }
+      return []; // Return an empty array if audioBooks is not an array
+    }
+  },
+
   async created() {
     try {
       const [popularResponse, recentResponse, childrenResponse] = await Promise.all([
@@ -162,12 +173,17 @@ export default {
           return bookResponse.json();
         })
       );
+
+      // Create audioBooks from popularBooks by filtering books that have an audio_file_path
+      this.audioBooks = this.popularBooks.filter(book => book.audio_file_path && book.audio_file_path.trim() !== '');
+
     } catch (error) {
       console.error('Ошибка при загрузке книг:', error);
     }
   }
 }
 </script>
+
 
 <style scoped>
 .book-image{
@@ -176,6 +192,7 @@ export default {
   object-fit: cover;
   border-radius: 5px;
 }
+
 .books-container {
   display: flex;
   flex-direction: column;
@@ -225,34 +242,6 @@ export default {
   text-decoration: none; /* Убираем подчеркивание */
 }
 
-
-
-
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.view-toggles {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.view-button {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.view-button.active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
 .books-list {
   display: flex;
   overflow-x: auto; /* Горизонтальная прокрутка */
@@ -262,63 +251,61 @@ export default {
 }
 
 .book-card {
-  width: 111px;
-  height: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 1rem;
-  border: 1px solid #ddd;
+  gap: 12px;
+  flex: 0 0 140px;
+  height: 260px; /* Высота карточки книги */
   border-radius: 10px;
-}
-
-.details-button {
-  margin-top: 0.5rem;
-  text-decoration: none;
-  color: #007bff;
-}
-
-.details-button:hover {
-  text-decoration: underline;
-}
-
-
-
-.book-card.list {
-  min-width: 100%;
-  flex-direction: row;
-  gap: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.book-card.list img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-}
-
-.book-card.list .book-info {
-  text-align: left;
-  flex-grow: 1;
+  background-color: #fff;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для карточек */
 }
 
 .book-details-author-title {
-  margin: 0; /* Убираем внешние отступы у контейнера */
-  padding: 0;
-  text-align: left; /* Убираем внутренние отступы у контейнера */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.book-details-author-title div {
-  margin: 0; /* Убираем отступы у элементов */
-  padding: 2px; /* Убираем внутренние отступы у элементов */
-  line-height: 1.2; 
+.book-details-title {
+  font-size: 16px; /* Размер шрифта для названия книги */
+  font-weight: bold; /* Жирный шрифт */
 }
-.book-details-title{
-  color:rgb(0, 0, 0)
+
+.book-details-author {
+  font-size: 14px; /* Размер шрифта для автора */
+  color: #666;
 }
-.book-details-author{
-  color:rgb(178, 159, 159)
+
+.details-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none; /* Убираем подчеркивание */
+}
+
+.details-button:hover .book-image {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.grid .book-card {
+  flex: 0 0 160px; /* Увеличиваем размер карточки в grid */
+}
+
+.list .book-card {
+  flex: 0 0 100%; /* Карточки в list будут занимать всю ширину */
+}
+
+.grid .books-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.list .books-list {
+  display: block;
 }
 </style>

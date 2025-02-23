@@ -3,6 +3,7 @@ from typing import List
 from core.config import get_database
 from schemas.book import BookCreate, BookUpdate, BookResponse
 from crud.crud_book import get_book_crud
+from api.book.helper_book import book_helper
 
 router = APIRouter(
     prefix="/books", 
@@ -100,3 +101,18 @@ async def get_books_by_genre(
     """Получение всех книг определенного жанра"""
     crud_book = get_book_crud(db)
     return await crud_book.get_by_genre(genre, skip, limit)
+
+@router.get("/popular-with-audio", response_model=List[BookResponse])
+async def get_popular_books_with_audio(skip: int = 0, limit: int = 100, db = Depends(get_database)):
+    crud_book = get_book_crud(db)
+    print(f"Получение популярных книг с аудио, пропуск: {skip}, лимит: {limit}")
+    popular_books = await crud_book.collection.find(
+        {"rating": {"$gte": 3.0}, "audio_file_path": {"$exists": True, "$ne": 'string'}}
+    ).sort("views", -1).skip(skip).limit(limit).to_list(limit)
+    print(f"Найдено книг: {len(popular_books)}")
+    
+    # Log the IDs being returned
+    for book in popular_books:
+        logging.debug(f"Returning book ID: {book['_id']}")
+    
+    return [book_helper(book) for book in popular_books]

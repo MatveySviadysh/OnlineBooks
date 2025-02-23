@@ -6,6 +6,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     recommendation_id: Optional[str] = None
+    storage_id: Optional[str] = None 
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -15,6 +16,7 @@ class UserResponse(BaseModel):
     id: int
     email: EmailStr
     recommendation_id: Optional[str] = None  # ID рекомендации
+    storage_id: Optional[str] = None 
 
     class Config:
         json_encoders = {

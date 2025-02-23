@@ -1,6 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import Optional
+from uuid import UUID
 
 class BookBase(BaseModel):
     title: str = Field(..., max_length=200, unique=True)
@@ -29,12 +30,12 @@ class BookUpdate(BaseModel):
     audio_file_path: str | None = None
 
 class BookResponse(BookBase):
-    id: str = Field(alias="_id")
+    id: str = Field(alias="_id")  # Ensure it's a string representation
     file_url: str 
     image: str
     created_at: datetime
     updated_at: datetime
-
+    
     class Config:
         from_attributes = True
         populate_by_name = True

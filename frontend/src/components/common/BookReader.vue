@@ -23,8 +23,8 @@
     <!-- Контент после загрузки -->
     <div v-else class="book-reader">
       <div class="content-container">
-        <h1>Детали книги: {{ book.title }}</h1>
-        <p><strong>Автор:</strong> {{ book.author }}</p>
+        <h1>{{ book.title }}</h1>
+        <p>{{ book.author }}</p>
 
         <!-- Блок с содержимым книги -->
         <div v-if="content">

@@ -21,13 +21,23 @@ def create_user(user: UserCreate):
         "updated_at": datetime.datetime.utcnow()
     }
 
+    storage_data = {
+        "name": user.email,
+        "created_at": datetime.datetime.utcnow(),
+        "updated_at": datetime.datetime.utcnow()
+    }
+
     new_recommendation = db.recommendations.insert_one(recommendation_data)
     recommendation_id = str(new_recommendation.inserted_id)
+
+    new_storage = db.storage.insert_one(storage_data)
+    storage_id = str(new_storage.inserted_id)
 
     user_data = {
         "email": user.email,
         "hashed_password": hashed_password,
-        "recommendation_id": recommendation_id
+        "recommendation_id": recommendation_id,
+        "storage_id": storage_id
     }
 
     db.users.insert_one(user_data)
@@ -35,9 +45,9 @@ def create_user(user: UserCreate):
     return {
         "email": user.email,
         "recommendation_id": recommendation_id,
+        "storage_id": storage_id,
         "message": "Пользователь успешно зарегистрирован"
-    }
-    
+    }    
 def authenticate_user(user: UserLogin, response: Response):
     user_data = db.users.find_one({"email": user.email})
     if not user_data:

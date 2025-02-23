@@ -46,31 +46,31 @@ async def delete_all_recommendations(db=Depends(get_database)):
     result = await db.recommendations.delete_many({})
     return {"deleted_count": result.deleted_count, "message": "All recommendations have been deleted."}
 
-@router.post("/{recommendation_id}/add-book/{book_id}", response_model=RecommendationResponse)
-async def add_book_to_recommendation(recommendation_id: str, book_id: str, db=Depends(get_database)):
+@router.post("/{storage_id}/add-book/{book_id}", response_model=dict)
+async def add_book_to_storage(storage_id: str, book_id: str, db=Depends(get_database)):
     try:
-        recommendation = await db.recommendations.find_one({"_id": ObjectId(recommendation_id)})
-        if not recommendation:
-            raise HTTPException(status_code=404, detail="Recommendation not found")
+        storage = await db.recommendations.find_one({"_id": ObjectId(storage_id)})
+        if not storage:
+            raise HTTPException(status_code=404, detail="Storage not found")
         
         book = await db.books.find_one({"_id": ObjectId(book_id)})
         if not book:
             raise HTTPException(status_code=404, detail="Book not found")
         
-        if "book_ids" not in recommendation:
-            recommendation["book_ids"] = []
+        if "books" not in storage:
+            storage["books"] = []
             
-        if book_id not in recommendation["book_ids"]:
-            await db.recommendations.update_one(
-                {"_id": ObjectId(recommendation_id)},
-                {
-                    "$push": {"book_ids": book_id},
-                    "$set": {"updated_at": datetime.utcnow()}
-                }
+        if book_id not in storage["books"]:
+            result = await db.recommendations.update_one(
+                {"_id": ObjectId(storage_id)},
+                {"$push": {"books": book_id}}
             )
-        
-        updated_recommendation = await db.recommendations.find_one({"_id": ObjectId(recommendation_id)})
-        updated_recommendation["_id"] = str(updated_recommendation["_id"])
-        return RecommendationResponse(**updated_recommendation)
+            if result.modified_count == 1:
+                return {"message": "Book successfully added to storage"}
+            else:
+                raise HTTPException(status_code=400, detail="Failed to add book to storage")
+        else:
+            return {"message": "Book already exists in storage"}
+            
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
