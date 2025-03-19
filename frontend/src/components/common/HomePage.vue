@@ -16,7 +16,6 @@
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <l-marker :lat-lng="marker"></l-marker>
-        <!-- Добавление кнопок управления -->
         <div class="map-controls">
           <button @click="zoomIn" class="zoom-btn">+</button>
           <button @click="zoomOut" class="zoom-btn">-</button>

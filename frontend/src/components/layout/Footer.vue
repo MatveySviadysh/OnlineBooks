@@ -12,6 +12,9 @@
           <a href="/contact_us" class="email">
             <i class="far fa-envelope"></i> Email Us
           </a>
+          <a href="/comments/write_comments" class="email">
+            <i class="far fa-envelope"></i> Write Com..
+          </a>
         </div>
       </div>
 
@@ -52,7 +55,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p class="copyright">&copy; {{ currentYear }} Art Gallery. All rights reserved.</p>
+      <p class="copyright">&copy; {{ currentYear }} Online Library. All Free Book.</p>
     </div>
   </footer>
 </template>

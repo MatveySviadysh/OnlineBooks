@@ -30,16 +30,6 @@
             <a href="#" class="submenu-link">Автор 3</a>
           </div>
         </div>
-        <div class="menu-category">
-          <a href="#" class="menu-link" @click="toggleCategory('quotes')">
-            Quotes <span class="expand-icon">{{ openCategory === 'quotes' ? '-' : '+' }}</span>
-          </a>
-          <div v-if="openCategory === 'quotes'" class="submenu">
-            <a href="/all_books?type=popular" class="submenu-link">Popular</a>
-            <a href="/all_books?type=children" class="submenu-link">Children and Parents</a>
-            <a href="/all_books?type=recent" class="submenu-link">New Books</a>
-          </div>
-        </div>
       </nav>
 
       <div class="menu-footer">

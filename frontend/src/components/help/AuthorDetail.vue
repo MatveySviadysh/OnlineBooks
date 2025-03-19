@@ -1,72 +1,81 @@
 <template>
-    <div class="author-detail">
-      <div v-if="loading" class="loading">Loading...</div>
-      <div v-else-if="error" class="error">{{ error }}</div>
-      <div v-else class="detail-content">
-        <div class="author-header">
-          <div class="author-photo">
-            <img v-if="author.photo" :src="author.photo" :alt="`Photo of ${author.first_name} ${author.last_name}`" />
-            <span v-else>No photo available</span>
-          </div>
-          <div class="author-info">
-            <h2>{{ author.first_name }} {{ author.last_name }}</h2>
-            <p><strong>Patronymic:</strong> {{ author.patronymic }}</p>
-            <p><strong>Birth Date:</strong> {{ author.birth_date }}</p>
-            <p><strong>Death Date:</strong> {{ author.death_date || 'N/A' }}</p>
-          </div>
+  <div class="author-detail">
+    <div v-if="loading" class="loading">Loading...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-else class="detail-content">
+      <div class="author-header">
+        <div class="author-photo">
+          <img v-if="author.photo" :src="author.photo" :alt="`Photo of ${author.first_name} ${author.last_name}`" />
+          <span v-else>No photo available</span>
         </div>
-        <div class="author-bio">
-          <h3>Biography</h3>
-          <p>{{ author.bio }}</p>
+        <div class="author-info">
+          <h2>{{ author.first_name }} {{ author.last_name }}</h2>
+          <p><strong>Patronymic:</strong> {{ author.patronymic }}</p>
+          <p><strong>Birth Date:</strong> {{ formatDate(author.birth_date) }}</p>
+          <p><strong>Death Date:</strong> {{ author.death_date ? formatDate(author.death_date) : 'N/A' }}</p>
         </div>
       </div>
+      <div class="author-bio">
+        <h3>Biography</h3>
+        <p>{{ author.bio }}</p>
+      </div>
     </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent } from 'vue';
-  import axios from 'axios';
-  
-  interface Author {
-    id: number;
-    first_name: string;
-    last_name: string;
-    patronymic: string;
-    birth_date: string;
-    death_date: string | null;
-    bio: string;
-    photo: string;
-  }
-  
-  export default defineComponent({
-    name: 'AuthorDetail',
-    data() {
-      return {
-        author: {} as Author,
-        loading: true,
-        error: '' as string | null,
-      };
-    },
-    created() {
-      this.fetchAuthorDetails();
-    },
-    methods: {
-      async fetchAuthorDetails() {
-        const fixedAuthorId = 4; // Use the fixed ID you mentioned
-        try {
-          this.loading = true;
-          const response = await axios.get(`http://localhost:8000/v1/authors/${fixedAuthorId}`);
-          this.author = response.data;
-          this.error = null;
-        } catch (error) {
-          this.error = 'Error loading author details';
-        } finally {
-          this.loading = false;
-        }
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import axios from 'axios';
+
+interface Author {
+  id: number;
+  first_name: string;
+  last_name: string;
+  patronymic: string;
+  birth_date: string;
+  death_date: string | null;
+  bio: string;
+  photo: string | null; // Сделаем photo обязательным для проверки на null
+}
+
+export default defineComponent({
+  name: 'AuthorDetail',
+  data() {
+    return {
+      author: {} as Author,
+      loading: true,
+      error: '' as string | null,
+    };
+  },
+  created() {
+    this.fetchAuthorDetails();
+  },
+  methods: {
+    async fetchAuthorDetails() {
+      const fixedAuthorId = 4; // Используйте фиксированный ID, который вы указали
+      try {
+        this.loading = true;
+        const response = await axios.get(`http://localhost:8000/v1/authors/${fixedAuthorId}`);
+        this.author = response.data;
+        this.error = null;
+      } catch (error) {
+        this.error = 'Error loading author details';
+      } finally {
+        this.loading = false;
       }
+    },
+    formatDate(dateString: string): string {
+      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
     }
-  });
-  </script>
+  }
+});
+</script>
+
+<style scoped>
+/* Добавьте здесь ваши стили */
+</style>
+
   
   <style scoped>
   .author-detail {
@@ -74,6 +83,8 @@
     background-color: #f7f7f7;
     max-width: 800px;
     margin: 20px auto;
+    margin-top: 12%;
+    margin-bottom: 4%;
   }
   
   .loading {

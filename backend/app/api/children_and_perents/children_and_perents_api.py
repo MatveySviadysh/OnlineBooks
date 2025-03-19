@@ -11,7 +11,6 @@ router = APIRouter(
 
 @router.post("/", response_model=ChildrenAndPerents)
 async def create_children_and_perents(item: ChildrenAndPerents, db=Depends(get_database)):
-    # Check if any record already exists
     existing_record = await db.children_and_perents.find_one({})
     if existing_record:
         raise HTTPException(status_code=400, detail="Record already exists. Only one record is allowed.")

@@ -1,14 +1,18 @@
 <template>
     <div class="all-books-container">
       <div class="header-info">
-        <div>Главная>Все подборки>читать</div>
-        <div>Десятки тысяч бесплатных книг</div>
-        <div>{{ bookCount }} книг</div>
-        <div>{{ averageRating }}</div>
+        <div><a style="margin-right: 10px; text-decoration: none; color: black;" href="/">Главная</a>><font style="margin-left: 10px; color: orange;">Все Подборки</font></div>
+        
       </div>
       <div class="image-container">
         <img src="../../assets/allbooksread.jpeg" alt="" class="allbooksread-img">
       </div>
+      <div class="body-info">
+        <div><i class="fas fa-dollar-sign"></i> Десятки тысяч бесплатных книг</div>
+        <div><i class="fas fa-book-open"></i> {{ bookCount }} книг</div>
+        <div><i class="fas fa-star"></i> {{ averageRating.toFixed(1) }}</div>
+      </div>
+
       
       <div class="books-grid">
         <div v-for="book in paginatedBooks" :key="book._id" class="book-card">
@@ -124,6 +128,14 @@
   </script>
   
   <style scoped>
+  .body-info{
+    display: flex;
+    margin-top: 20px;
+    margin-bottom:  40px;
+    justify-content: center;
+    gap: 60px;
+    padding: 50px;
+  }
   .all-books-container {
       max-width: 1200px;
       margin: 100px auto 40px;
@@ -168,7 +180,6 @@
   .image-container {
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
       margin-bottom: 40px;
   }
   

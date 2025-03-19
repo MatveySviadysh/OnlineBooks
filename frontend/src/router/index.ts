@@ -17,6 +17,7 @@ import Storage from '@/components/common/Storge.vue'
 import StoreLocator from '@/components/common/StoreLocator.vue'
 import WriteComment from '@/components/common/WriteComment.vue'
 import AllReadBooks from '@/components/common/AllReadBooks.vue'
+import BookListening from '@/components/common/ListeningBook.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -119,6 +120,13 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AllReadBooks',
     component: AllReadBooks 
   },
+  {
+    path: '/book/:id/listening',
+    name: 'BookListening',
+    component: BookListening,
+    props: true,
+  }
+  
 ]
 
 

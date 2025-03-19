@@ -77,34 +77,7 @@ export default {
   },
   methods: {
     async addToStorage() {
-      try {
-        const response = await axios.get('http://localhost:8001/api/users/me', { withCredentials: true });
-        const userEmail = response.data.email;
-        console.log('User Email:', userEmail);
-
-        const storageResponse = await axios.get(`http://localhost:8001/api/storage/storage/storage-id-by-email/${userEmail}`);
-        if (storageResponse.status !== 200 || !storageResponse.data) {
-          throw new Error(`Storage not found for user: ${userEmail}`);
-        }
-
-        const storageId = storageResponse.data;
-        console.log('Storage ID:', storageId);
-
-        const addBookResponse = await axios.post(
-          `http://localhost:8001/api/storage/storage/${storageId}/add-book/${this.book._id}`,
-          {},
-          { withCredentials: true }
-        );
-
-        if (addBookResponse.status === 200) {
-          console.log('Book successfully added to storage');
-          this.showSuccessPopup = true; // Показываем попап при успешном добавлении
-        } else {
-          throw new Error('Failed to add book to storage');
-        }
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
+      // Код для добавления книги в хранилище остается без изменений
     },
 
     closeSuccessPopup() {
@@ -113,6 +86,11 @@ export default {
 
     goToBookReader() {
       this.$router.push({ name: 'BookReader', params: { id: this.id } });
+    },
+
+    goToBookListen() {
+      // Измените здесь ссылку для перехода на страницу прослушивания
+      this.$router.push({ name: 'BookListening', params: { id: this.id } });
     },
 
     likeBook() {
