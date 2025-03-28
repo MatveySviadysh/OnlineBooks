@@ -1,0 +1,21 @@
+.books-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .books-row {
+    width: 100%;
+  }
+  
+  .books-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .book-card {
+    min-width: 200px;
+    /* Добавьте дополнительные стили для карточки книги */
+  }

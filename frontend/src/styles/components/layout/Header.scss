@@ -1,0 +1,333 @@
+/* Основной стиль верхней панели */
+.top-bar {
+  background-color: #f8f4ef;
+  padding: 13px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  width: 100%;
+}
+
+.top-bar-content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 auto;
+  padding-right: 60px;
+}
+
+.top-links {
+  display: flex;
+  gap: 20px;
+  user-select: none;
+}
+
+.top-links a {
+  color: #2a2a2a;
+  text-decoration: none;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s ease;
+}
+
+.top-links a:hover {
+  opacity: 0.8;
+}
+
+/* Основной заголовок */
+.main-header {
+  background-color: #f8f4ef;
+  border-bottom: none;
+  padding: 10px 10px;
+  position: fixed;
+  top: 32px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.header-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+/* Левая часть заголовка */
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.menu-wrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-wrapper span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #333333;
+}
+
+.menu-wrapper i {
+  font-size: 14px;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-wrapper i.fas.fa-search {
+  font-size: 12px;
+  color: #333333;
+}
+
+.search-input {
+  background: #f8f4ef;
+  max-width: 80px;
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #000000;
+  color: #000000;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1000;
+  border-radius: 0;
+}
+
+.search-input::placeholder {
+  color: #333333;
+}
+
+.search-input:focus {
+  position: absolute;
+  max-width: 1900px;
+  width: calc(100vw - 290px);
+  outline: none;
+}
+
+/* Логотип */
+.logo {
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+.logo.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.logo-link {
+  color: #333333;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Правая часть заголовка */
+.right-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  padding-right: 8px;
+  width: 100%;
+}
+
+.account-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: 50px;
+}
+
+.account-wrapper i {
+  font-size: 14px;
+}
+
+.account-wrapper span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 10px;
+}
+
+.account-link {
+  text-decoration: none;
+  color: #000000;
+  display: flex;
+  align-items: center;
+}
+
+/* Боковое меню */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 446px;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 1100;
+  transition: all 0.3s ease;
+  padding: 15px;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.side-menu.is-open {
+  left: 0;
+  visibility: visible;
+  opacity: 1;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between; /* Размещение элементов по краям */
+  align-items: center; /* Центрирование элементов по вертикали */
+  padding: 15px 20px; /* Отступы для эстетики */
+}
+
+.menu-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0; /* Убираем отступы по умолчанию */
+}
+
+.close-menu {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.close-menu:hover {
+  color: #2a2a2a; /* Цвет при наведении */
+}
+
+.menu-footer {
+  background-color: #f8f4ef;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  width: 476px; 
+  height: 200px;/* На всю ширину */
+  
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.menu-link {
+  color: #333333;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+  padding: 5px 0;
+  background-color: transparent; /* Убираем фон */
+  border: none; /* Убираем границу */
+  margin-left: 6%;
+}
+
+.menu-link:hover {
+  color: #000000;
+}
+
+.menu-text-links{
+  margin-top: 50px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .top-bar {
+    display: none;
+  }
+
+  .main-header {
+    top: 0;
+    padding: 8px 10px;
+  }
+
+  .header-content {
+    gap: 5px;
+  }
+
+  .menu-wrapper span {
+    display: none;
+  }
+
+  .account-wrapper span {
+    display: none;
+  }
+
+  .main-header {
+    padding-right: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header {
+    padding: 6px 8px;
+  }
+}
+
+.storage-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 13px;
+  color: #333333;
+}
+
+/* Подменю для категорий */
+.submenu {
+  display: flex;
+  flex-direction: column; /* Выстраиваем элементы в столбик */
+  padding-left: 20px; /* Отступ для подменю */
+}
+
+/* Ссылки в подменю */
+.submenu-link {
+  color: #333333;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+  padding: 5px 0;
+}
+
+.submenu-link:hover {
+  color: #000000;
+}
