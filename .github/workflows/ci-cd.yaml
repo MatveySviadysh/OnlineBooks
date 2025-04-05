@@ -35,7 +35,10 @@ jobs:
     - name: Run frontend server
       working-directory: ./frontend
       run: npm run serve
-      
+    
+    - name: Stop frontend server
+      working-directory: ./frontend
+      run: npm run stop
    
       
    
