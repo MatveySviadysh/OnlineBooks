@@ -7,7 +7,7 @@ app = FastAPI(title="User API")
 # Добавляем CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080"],  # Разрешаем запросы с вашего Vue frontend
+    allow_origins=["http://localhost:8081"],  # Разрешаем запросы с вашего Vue frontend
     allow_credentials=True,
     allow_methods=["*"],  # Разрешаем все методы
     allow_headers=["*"],  # Разрешаем все заголовки
