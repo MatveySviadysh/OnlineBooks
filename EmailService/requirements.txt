@@ -8,3 +8,6 @@ idna==3.10
 multidict==6.1.0
 propcache==0.2.1
 yarl==1.18.3
+aiohttp
+aiohttp-cors
+python-dotenv

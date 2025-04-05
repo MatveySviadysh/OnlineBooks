@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - frontend-babel-cache:/tmp/.cache
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./EmailService
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    env_file:
+      - .env  # Теперь используем env_file вместо отдельной переменной
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  frontend-babel-cache: 
