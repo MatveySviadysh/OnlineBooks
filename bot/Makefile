@@ -1,7 +1,9 @@
 IMAGE_NAME=telegram-bot
 
 build:
-	docker build -t $(IMAGE_NAME) .
+	./scripts/build.sh
+	
 
 run:
-	docker run --rm --env-file .env $(IMAGE_NAME)
+	./scripts/rub.sh
+	
